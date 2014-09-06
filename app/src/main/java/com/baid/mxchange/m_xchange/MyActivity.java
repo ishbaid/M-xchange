@@ -1,17 +1,31 @@
 package com.baid.mxchange.m_xchange;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 
 public class MyActivity extends ActionBarActivity {
 
+    RelativeLayout background;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+        background = (RelativeLayout) findViewById(R.id.background);
+        background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MyActivity.this, SelectCourse.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
