@@ -1,6 +1,7 @@
 package com.baid.mxchange.m_xchange;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -103,6 +104,44 @@ public class SelectCourse extends Activity implements AdapterView.OnItemSelected
 
     }
 
+    private void loadCourses(String code){
+
+        new AsyncTask<Void, Void, Object>(){
+
+            @Override
+            protected Object doInBackground(Void... voids) {
+
+
+                return null;
+            }
+        }.execute();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Classes");
+        query.whereEqualTo("SubjectCode", code);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                if(e == null){
+
+                    Log.d("Baid", "Classes found: " + objects.size());
+                    List<String>items = new ArrayList<String>();
+                    for(int i = 0; i < objects.size(); i ++){
+
+
+                        ParseObject po = objects.get(i);
+                        Log.d("Baid", po.getString("SubjectCode") + ":" + po.getInt("CatalogNbr"));
+                        if(po.getString("SubjectCode") != null && po.getInt("CatalogNbr") > 0)
+                            items.add(po.getString("SubjectCode") + po.getInt("CatalogNbr"));
+
+                    }
+
+                    course.setAdapter(new ArrayAdapter<String>(SelectCourse.this, android.R.layout.simple_spinner_item, items));
+                }
+            }
+        });
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
@@ -126,6 +165,7 @@ public class SelectCourse extends Activity implements AdapterView.OnItemSelected
             if(allDepartments != null){
 
                 ParseObject dep = allDepartments.get(position);
+                loadCourses(dep.getString("SubjectCode"));
 
             }
         }
