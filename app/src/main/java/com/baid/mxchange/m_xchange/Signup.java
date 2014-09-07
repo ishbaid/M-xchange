@@ -37,7 +37,7 @@ public class Signup extends Activity {
         first = (EditText) findViewById(R.id.first);
         last =  (EditText) findViewById(R.id.last);
         email = (EditText) findViewById(R.id.username);
-        phone = (EditText) findViewById(R.id.phone);
+        phone = (EditText) findViewById(R.id.edition);
         password = (EditText) findViewById(R.id.password);
         password2 = (EditText) findViewById(R.id.password2);
 

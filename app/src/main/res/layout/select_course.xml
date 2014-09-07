@@ -2,25 +2,42 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
     <Spinner
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/school"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:background="@android:color/white"
+        />
 
     <Spinner
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/department"
         android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:background="@android:color/white"/>
 
     <Spinner
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/course"
         android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:background="@android:color/white"/>
+
+    <Button
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+
+        android:id="@+id/next"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

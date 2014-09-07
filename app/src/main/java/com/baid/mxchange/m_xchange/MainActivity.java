@@ -12,6 +12,9 @@ import com.parse.Parse;
 public class MainActivity extends Activity {
 
     public static Boolean buy;
+    public static Boolean book;
+    public static String course;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
