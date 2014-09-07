@@ -114,6 +114,15 @@ public class TicketBuyFragment extends Fragment {
             public void done(List<ParseObject> objects, ParseException e) {
                 if(e == null){
 
+                    if(objects.size() == 0){
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                        alertDialog.setTitle("Message");
+                        alertDialog.setMessage("Unfortunately, we have found no matches at this time. We will contact you when a match has been found.");
+                        alertDialog.setCanceledOnTouchOutside(true);
+                        alertDialog.show();
+                    }
+
                     Log.d("Baid", "Found " + objects.size() + " tickets");
                     final List<ParseUser> matches = new ArrayList<ParseUser>();
                     final List<String> names = new ArrayList<String>();
