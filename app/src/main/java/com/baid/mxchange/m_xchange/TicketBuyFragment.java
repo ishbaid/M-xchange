@@ -26,40 +26,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Ish on 9/6/14.
+ * Created by Ish on 9/7/14.
  */
-public class Fragment4 extends Fragment {
+public class TicketBuyFragment extends Fragment {
 
-    EditText price, edition, name;
-    Button confirm;
     ListView results;
+    EditText price;
+    Button confirm;
 
     double priceVal = -1;
-    int editionVal = -1;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.activity_sell_, container, false);
-
-        price = (EditText) rootView.findViewById(R.id.price);
-        edition = (EditText) rootView.findViewById(R.id.row);
-        name = (EditText) rootView.findViewById(R.id.section);
+        View rootView = inflater.inflate(R.layout.tick_buy, container, false);
 
         results = (ListView) rootView.findViewById(R.id.spinner3);
-
+        price = (EditText) rootView.findViewById(R.id.price);
         confirm = (Button) rootView.findViewById(R.id.confirm);
         confirm.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
 
-                //must enter price
-                if(!price.getText().toString().equals("")){
-
+                if(!price.getText().toString().equals(""))
                     priceVal = Double.parseDouble(price.getText().toString());
-                }
                 else{
 
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
@@ -69,53 +59,28 @@ public class Fragment4 extends Fragment {
                     alertDialog.show();
                 }
 
-                //edition is optional
-                if(!edition.getText().toString().equals("")){
+                if(priceVal > -1){
 
-                    editionVal = Integer.parseInt(edition.getText().toString());
-                }
-
-                String title = null;
-                //title is required
-                if(!name.getText().toString().equals("")){
-
-                    title = name.getText().toString();
-                }
-                else{
-
-                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                    alertDialog.setTitle("Alert ");
-                    alertDialog.setMessage("Must enter textbook title.");
-                    alertDialog.setCanceledOnTouchOutside(true);
-                    alertDialog.show();
-                }
-
-                if(priceVal != -1 && title != null){
-
-                    Log.d("Baid", "Ready to create ParseObjects");
-
-                    final ParseObject textbook = new ParseObject("Textbook");
-                    textbook.put("name", title);
-                    textbook.put("class", MainActivity.course);
-                    if(editionVal > -1)
-                        textbook.put("edition", editionVal);
-                    textbook.saveInBackground(new SaveCallback() {
+                    final ParseObject ticket = new ParseObject("SportsTicket");
+                    ticket.put("game", MainActivity.sportsGame);
+                    ticket.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if(e == null){
+                                Log.d("Baid", "Saved ticket!");
+                                ParseObject itemBuy = new ParseObject("ItemBuy");
+                                itemBuy.put("maxPay", priceVal);
+                                itemBuy.put("sportsTicket", ticket);
+                                itemBuy.put("user", ParseUser.getCurrentUser());
 
-                                Log.d("Baid", "Textbook saved!");
-                                ParseObject itemSell = new ParseObject("ItemSell");
-                                itemSell.put("cost", priceVal);
-                                itemSell.put("user", ParseUser.getCurrentUser());
-                                itemSell.put("textbook", textbook);
-
-                                itemSell.saveInBackground(new SaveCallback() {
+                                itemBuy.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
                                         if(e == null){
 
-                                            Log.d("Baid", "Saved ItemSell!");
+                                            Log.d("Baid", "Saved ItemBuy!");
+
+                                            Log.d("Baid", "Ready to create parseObjects");
                                             search();
                                         }
                                     }
@@ -123,36 +88,33 @@ public class Fragment4 extends Fragment {
                             }
                         }
                     });
+
+
+
                 }
-
-
             }
         });
-
 
         return rootView;
     }
 
-    //finds matches for user
     private void search(){
 
-        ParseQuery<ParseObject>innerQuery = ParseQuery.getQuery("Textbook");
-        innerQuery.whereEqualTo("class", MainActivity.course);
+        ParseQuery<ParseObject> innerQuery = ParseQuery.getQuery("SportsTicket");
+        innerQuery.whereEqualTo("game", MainActivity.sportsGame);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ItemBuy");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ItemSell");
         //should contain correct textbook
-        query.whereMatchesQuery("textbook", innerQuery);
-        //should be willing to pay cost requested
-        query.whereGreaterThan("maxPay", priceVal);
-        //we are going to need to access the user object, so we must include the user field in our query so we can access it later
+        query.whereMatchesQuery("sportsTicket", innerQuery);
+        //should be less than max pay
+        query.whereLessThan("cost", priceVal);
         query.include("user");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if(e == null){
 
-                    Log.d("Baid", "Found " + objects.size() + " matches");
-                    //creates list of matches
+                    Log.d("Baid", "Found " + objects.size() + " tickets");
                     final List<ParseUser> matches = new ArrayList<ParseUser>();
                     final List<String> names = new ArrayList<String>();
                     final List<String> label = new ArrayList<String>();
@@ -167,15 +129,13 @@ public class Fragment4 extends Fragment {
                         name += " " + match.getString("lastName");
                         names.add(name);
 
-                        Double payment = objects.get(i).getDouble("maxPay");
+                        Double payment = objects.get(i).getDouble("cost");
                         payments.add(payment);
                         label.add(name + "\t$" + payment);
 
-
-
                     }
 
-                    results.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, label));
+                    results.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, label));
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -195,21 +155,16 @@ public class Fragment4 extends Fragment {
                             intent.putExtra("number", phone);
                             intent.putExtra("pay", payment);
                             startActivity(intent);
-
                         }
                     });
-
                 }
-
             }
         });
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         priceVal = -1;
-        editionVal = -1;
     }
 }

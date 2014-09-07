@@ -14,6 +14,7 @@ public class MainActivity extends Activity {
     public static Boolean buy;
     public static Boolean book;
     public static String course;
+    public static String sportsGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

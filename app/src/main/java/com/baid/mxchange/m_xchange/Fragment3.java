@@ -40,7 +40,7 @@ public class Fragment3 extends Fragment {
 
         View rootView = inflater.inflate(R.layout.activity_buy_book, container, false);
 
-        price = (EditText) rootView.findViewById(R.id.first);
+        price = (EditText) rootView.findViewById(R.id.price);
         name = (EditText) rootView.findViewById(R.id.last);
         results = (ListView) rootView.findViewById(R.id.spinner3);
 

@@ -53,6 +53,13 @@ public class Fragment2 extends Fragment implements View.OnClickListener{
 
             Log.d("Baid", "Ticket");
             MainActivity.book = new Boolean(false);
+
+            TicketsFragment newFragment = new TicketsFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, newFragment);
+            transaction.addToBackStack(null);
+// Commit the transaction
+            transaction.commit();
         }
 
 

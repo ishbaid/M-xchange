@@ -34,10 +34,10 @@ public class Signup extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        first = (EditText) findViewById(R.id.first);
+        first = (EditText) findViewById(R.id.price);
         last =  (EditText) findViewById(R.id.last);
         email = (EditText) findViewById(R.id.username);
-        phone = (EditText) findViewById(R.id.edition);
+        phone = (EditText) findViewById(R.id.row);
         password = (EditText) findViewById(R.id.password);
         password2 = (EditText) findViewById(R.id.password2);
 
