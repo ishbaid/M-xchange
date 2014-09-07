@@ -3,6 +3,7 @@ package com.baid.mxchange.m_xchange;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.parse.LogInCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
 public class MyActivity extends ActionBarActivity implements  View.OnClickListener{
@@ -30,14 +36,35 @@ public class MyActivity extends ActionBarActivity implements  View.OnClickListen
         }
         else if (id == login.getId()){
 
-            Intent intent = new Intent(MyActivity.this, MainActivity.class);
-            startActivity(intent);
+            String empty = "";
+            String un = email.getText().toString();
+            String pw = password.getText().toString();
+            ParseUser.logInInBackground(un, pw, new LogInCallback() {
+                @Override
+                public void done(ParseUser parseUser, ParseException e) {
+                    if(parseUser != null && e == null){
+
+                        Log.d("Baid", "Logged in!");
+                        Intent intent = new Intent(MyActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                    else if(e != null){
+
+                        Log.d("Baid", "Error: " + e.getMessage());
+                    }
+                }
+            });
+
+
 
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Parse.initialize(this, "AQ2Vfb0vhbBq3N6t2Aeu4fpLaZ5Xp8HI42P1fOxr", "mkjVzwYH47zFQD6xOMNvwMmRHNxg0QAnDnS7AHUI");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 

@@ -8,11 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class Signup extends Activity {
     Button confirm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Parse.initialize(this, "AQ2Vfb0vhbBq3N6t2Aeu4fpLaZ5Xp8HI42P1fOxr", "mkjVzwYH47zFQD6xOMNvwMmRHNxg0QAnDnS7AHUI");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
@@ -45,19 +51,50 @@ public class Signup extends Activity {
                 //ensures that all fields are filled in and both passwords are the same
                 if(!first.getText().toString().equals(empty) && !last.getText().toString().equals(empty) && !email.getText().toString().equals(empty) && !phone.getText().toString().equals(empty) && password2.getText().toString().equals(password.getText().toString())){
 
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
                     query.whereEqualTo("username", email.getText().toString());
-                    query.findInBackground(new FindCallback<ParseObject>() {
+                    query.findInBackground(new FindCallback<ParseUser>() {
                         @Override
-                        public void done(List<ParseObject> objects, ParseException e) {
+                        public void done(List<ParseUser> objects, ParseException e) {
 
                             if(e == null){
 
                                 if(objects.size() == 0){
 
-                                    ParseObject user = new ParseObject("User");
+                                    Log.d("Baid", "User doesn't exist");
+                                    //create user object
+                                    ParseUser user = new ParseUser();
+                                    user.setUsername(email.getText().toString());
+                                    user.setPassword(password.getText().toString());
+                                    user.setEmail(email.getText().toString());
+                                    user.put("phoneNumber", phone.getText().toString());
+                                    user.put("firstName", first.getText().toString());
+                                    user.put("lastName", last.getText().toString());
+
+                                    user.signUpInBackground(new SignUpCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+
+                                            if(e == null){
+
+                                                Log.d("Baid", "Account created!");
+                                                Toast.makeText(Signup.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                                                //launch main activity
+                                                Intent intent = new Intent(Signup.this, MainActivity.class);
+                                                startActivity(intent);
+                                            }
+                                            else{
+
+                                                Log.d("Baid", "Error signing up!" + e.getMessage());
+                                            }
+                                        }
+                                    });
+
+
                                 }
                                 else if(objects.size() == 1){
+
+                                    Log.d("Baid", "User already exits");
 
                                     AlertDialog alertDialog = new AlertDialog.Builder(Signup.this).create();
                                     alertDialog.setTitle("Alert ");
@@ -68,16 +105,18 @@ public class Signup extends Activity {
                                 }
                                 else if(objects.size() > 1){
 
+
                                     Log.d("Baid", "Error. Duplicate accounts may exist");
                                 }
                             }
                         }
                     });
-                    Intent intent = new Intent(Signup.this, MainActivity.class);
-                    startActivity(intent);
+
 
                 }
                 else{
+
+                    Log.d("Baid", "Error. Invalid input");
                     AlertDialog alertDialog = new AlertDialog.Builder(Signup.this).create();
                     alertDialog.setTitle("Alert ");
                     alertDialog.setMessage("Enter all fields and ensure both passwords are the same");

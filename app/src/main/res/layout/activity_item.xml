@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.stephen.mxchange.choice"
+    android:background="@drawable/background">
+
+
+
+    <Button
+        android:id="@+id/sportsTicket"
+
+        android:text="Sports Ticket"
+        android:textColor="#000000"
+        android:textSize="30sp"
+
+
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_shape"
+
+
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/textbook"
+        android:layout_centerHorizontal="true" />
+
+
+    <Button
+        android:id="@+id/textbook"
+
+        android:text="Textbook"
+        android:textColor="#000000"
+        android:textSize="30sp"
+
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_shape"
+
+
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>
