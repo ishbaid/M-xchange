@@ -2,6 +2,7 @@ package com.baid.mxchange.m_xchange;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -139,7 +140,10 @@ public class Fragment4 extends Fragment {
         innerQuery.whereEqualTo("class", MainActivity.course);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ItemBuy");
+        //should contain correct textbook
         query.whereMatchesQuery("textbook", innerQuery);
+        //should be willing to pay cost requested
+        query.whereGreaterThan("maxPay", priceVal);
         //we are going to need to access the user object, so we must include the user field in our query so we can access it later
         query.include("user");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -149,32 +153,52 @@ public class Fragment4 extends Fragment {
 
                     Log.d("Baid", "Found " + objects.size() + " matches");
                     //creates list of matches
-                    List<ParseUser> matches = new ArrayList<ParseUser>();
-                    List<String> names = new ArrayList<String>();
+                    final List<ParseUser> matches = new ArrayList<ParseUser>();
+                    final List<String> names = new ArrayList<String>();
+                    final List<String> label = new ArrayList<String>();
+                    final List<Double> payments = new ArrayList<Double>();
                     for(int i = 0; i < objects.size(); i ++){
 
                         ParseUser match = objects.get(i).getParseUser("user");
                         matches.add(match);
 
+
                         String name = match.getString("firstName");
                         name += " " + match.getString("lastName");
                         names.add(name);
 
+                        Double payment = objects.get(i).getDouble("maxPay");
+                        payments.add(payment);
+                        label.add(name + "\t$" + payment);
+
+
+
                     }
 
-                    results.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, names));
-                    results.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    results.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, label));
+                    results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+                            Log.d("Baid", "Position " + position + " pressed");
+                            ParseUser person = matches.get(position);
+                            String name = names.get(position);
+                            String email = person.getString("email");
+                            String phone = person.getString("phoneNumber");
+                            Double payment = payments.get(position);
 
-                        }
+                            Log.d("Baid", name + ", " + email + ", " + phone);
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
+                            Intent intent = new Intent(getActivity(), ViewProfileActivity.class);
+                            intent.putExtra("name", name);
+                            intent.putExtra("email", email);
+                            intent.putExtra("number", phone);
+                            intent.putExtra("pay", payment);
+                            startActivity(intent);
 
                         }
                     });
+
                 }
 
             }
