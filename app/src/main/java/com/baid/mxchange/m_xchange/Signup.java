@@ -32,7 +32,7 @@ public class Signup extends Activity {
         Parse.initialize(this, "AQ2Vfb0vhbBq3N6t2Aeu4fpLaZ5Xp8HI42P1fOxr", "mkjVzwYH47zFQD6xOMNvwMmRHNxg0QAnDnS7AHUI");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.sign_up_activity);
 
         first = (EditText) findViewById(R.id.price);
         last =  (EditText) findViewById(R.id.last);

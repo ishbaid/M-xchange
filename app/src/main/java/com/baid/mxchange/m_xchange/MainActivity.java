@@ -12,6 +12,7 @@ import com.parse.ParseUser;
 
 /**
  * Created by Ish on 9/6/14.
+ * This activity is where all fragments will lay on top of
  */
 public class MainActivity extends Activity {
 

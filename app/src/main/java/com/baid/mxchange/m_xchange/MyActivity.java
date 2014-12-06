@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
@@ -15,10 +15,14 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-
+/*
+* This activity is where user signs into their account. If user is already signed in,
+* they will be redirected to dashboard
+*
+* */
 public class MyActivity extends ActionBarActivity implements  View.OnClickListener{
 
-    RelativeLayout background;
+    LinearLayout background;
     EditText email, password;
     Button login;
     TextView signup;
@@ -75,7 +79,7 @@ public class MyActivity extends ActionBarActivity implements  View.OnClickListen
         signup.setOnClickListener(this);
 
 
-        background = (RelativeLayout) findViewById(R.id.background);
+        background = (LinearLayout) findViewById(R.id.background);
 
 
     }
