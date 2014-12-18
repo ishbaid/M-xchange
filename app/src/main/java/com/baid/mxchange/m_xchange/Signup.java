@@ -29,7 +29,7 @@ public class Signup extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Parse.initialize(this, "AQ2Vfb0vhbBq3N6t2Aeu4fpLaZ5Xp8HI42P1fOxr", "mkjVzwYH47zFQD6xOMNvwMmRHNxg0QAnDnS7AHUI");
+        Parse.initialize(this, "Hv2s5UNlCaykyL5JxX5EIGYaxQrXAV6Ci2W6TikL", "nmVHe8v5c9pmDz9Wvh8o7zWQNKO88WVmtyKL56Hy");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_activity);
@@ -52,7 +52,10 @@ public class Signup extends Activity {
                 if(!first.getText().toString().equals(empty) && !last.getText().toString().equals(empty) && !email.getText().toString().equals(empty) && !phone.getText().toString().equals(empty) && password2.getText().toString().equals(password.getText().toString())){
 
                     ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    query.whereEqualTo("username", email.getText().toString());
+
+                    final String umEmail = email.getText().toString() + "@umich.edu";
+
+                    query.whereEqualTo("username", umEmail);
                     query.findInBackground(new FindCallback<ParseUser>() {
                         @Override
                         public void done(List<ParseUser> objects, ParseException e) {
@@ -64,9 +67,9 @@ public class Signup extends Activity {
                                     Log.d("Baid", "User doesn't exist");
                                     //create user object
                                     ParseUser user = new ParseUser();
-                                    user.setUsername(email.getText().toString());
+                                    user.setUsername(umEmail);
                                     user.setPassword(password.getText().toString());
-                                    user.setEmail(email.getText().toString());
+                                    user.setEmail(umEmail);
                                     user.put("phoneNumber", phone.getText().toString());
                                     user.put("firstName", first.getText().toString());
                                     user.put("lastName", last.getText().toString());

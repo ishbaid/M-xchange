@@ -3,34 +3,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@android:color/white">
 
     <Spinner
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/school"
         android:spinnerMode="dropdown"
-        android:background="@android:color/white"
+        android:background="#ffcb05"
         />
 
     <Spinner
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/department"
         android:layout_gravity="center_horizontal"
         android:spinnerMode="dropdown"
-        android:background="@android:color/white"/>
+        android:background="#ffcb05"/>
 
     <Spinner
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/course"
         android:layout_gravity="center_horizontal"
         android:spinnerMode="dropdown"
-        android:background="@android:color/white"/>
+        android:background="#ffcb05"/>
 
     <Button
         android:layout_marginTop="100dp"

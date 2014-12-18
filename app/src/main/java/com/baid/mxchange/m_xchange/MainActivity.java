@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 /**
@@ -19,24 +20,40 @@ public class MainActivity extends Activity {
     public static Boolean buy;
     public static Boolean book;
     public static String course;
-    public static String sportsGame;
+    public static ParseObject sportsGame;
+
+
+    public static SearchTextbooks searchResults;
+    public static SearchTickets ticketResults;
+    public static SearchInterface searchInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Parse.initialize(this, "AQ2Vfb0vhbBq3N6t2Aeu4fpLaZ5Xp8HI42P1fOxr", "mkjVzwYH47zFQD6xOMNvwMmRHNxg0QAnDnS7AHUI");
-
-        super.onCreate(savedInstanceState);
+        Parse.initialize(this, "7ybxS3opTh2dYIeo0DLDguiqpvmtlanXoSCZzIdw", "xgenFXtatwsewpQ4YQiPXxC8V3qjPb9JbrFPls9n");super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         //for now we will load fragment 1, but I would like some sort of dashboard here later
 
-        Fragment1 newFragment = new Fragment1();
+        ProfileFragment newFragment = new ProfileFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         transaction.replace(R.id.frame, newFragment);
         transaction.commit();
 
+        searchInterface = new SearchInterface() {
+            @Override
+            public void onSearchComplete() {
 
+                //launches results fragment
+                ResultsFragment resultsFragment = new ResultsFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame, resultsFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+
+
+        };
 
     }
 
@@ -56,11 +73,13 @@ public class MainActivity extends Activity {
         if (id == R.id.logout) {
 
             ParseUser.logOut();
-            Intent intent = new Intent(MainActivity.this, MyActivity.class);
+            Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

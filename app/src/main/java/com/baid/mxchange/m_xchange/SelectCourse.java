@@ -1,7 +1,6 @@
 package com.baid.mxchange.m_xchange;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,13 +34,13 @@ public class SelectCourse extends Activity implements AdapterView.OnItemSelected
         setContentView(R.layout.select_course);
 
         school = (Spinner) findViewById(R.id.school);
-        school.setOnItemSelectedListener(this);
         department = (Spinner) findViewById(R.id.department);
-        department.setOnItemSelectedListener(this);
         course = (Spinner) findViewById(R.id.course);
+
+
+        school.setOnItemSelectedListener(this);
+        department.setOnItemSelectedListener(this);
         course.setOnItemSelectedListener(this);
-
-
 
         allSchools = new ArrayList<ParseObject>();
         allDepartments = new ArrayList<ParseObject>();
@@ -106,15 +105,6 @@ public class SelectCourse extends Activity implements AdapterView.OnItemSelected
 
     private void loadCourses(String code){
 
-        new AsyncTask<Void, Void, Object>(){
-
-            @Override
-            protected Object doInBackground(Void... voids) {
-
-
-                return null;
-            }
-        }.execute();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Classes");
         query.whereEqualTo("SubjectCode", code);

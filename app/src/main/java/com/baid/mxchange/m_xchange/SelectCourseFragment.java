@@ -35,10 +35,13 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.select_course, container, false);
+
         school = (Spinner) rootView.findViewById(R.id.school);
         school.setOnItemSelectedListener(this);
+
         department = (Spinner) rootView.findViewById(R.id.department);
         department.setOnItemSelectedListener(this);
+
         course = (Spinner) rootView.findViewById(R.id.course);
         course.setOnItemSelectedListener(this);
 
@@ -56,7 +59,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
                     if(MainActivity.buy == true){
 
 
-                        Fragment3 newFragment = new Fragment3();
+                        BuyFragment newFragment = new BuyFragment();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame, newFragment);
                         transaction.addToBackStack(null);
@@ -66,7 +69,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
                     //start sell
                     else{
 
-                        Fragment4 newFragment = new Fragment4();
+                        SellFragment newFragment = new SellFragment();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame, newFragment);
                         transaction.addToBackStack(null);
@@ -89,8 +92,8 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
         allCourse = new ArrayList<ParseObject>();
 
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("School");
-        query.whereExists("SchoolCode");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Schools");
+        query.whereExists("code");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
@@ -101,7 +104,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
                     for(int i = 0; i < objects.size(); i ++){
 
-                        items.add(objects.get(i).getString("SchoolDescr"));
+                        items.add(objects.get(i).getString("description"));
 
                     }
                     Log.d("Baid", "Item size: " + items.size());
@@ -123,7 +126,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
         Log.d("Baid", "Loading Departments");
         String schoolSelection = (String) school.getSelectedItem();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Subjects");
-        query.whereEqualTo("SchoolCode", code);
+        query.whereEqualTo("school", code);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -135,7 +138,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
                     for(int i = 0; i < objects.size(); i ++){
 
 
-                        items.add(objects.get(i).getString("SubjectDescr"));
+                        items.add(objects.get(i).getString("description"));
                     }
                     department.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items));
                 }
@@ -159,7 +162,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
         }.execute();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Classes");
-        query.whereEqualTo("SubjectCode", code);
+        query.whereEqualTo("subject", code);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -173,11 +176,12 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
                         ParseObject po = objects.get(i);
 
+                        String subject = po.getString("subject");
+                        String catNum = po.getString("catalogNumber");
 
-
-                        Log.d("Baid", po.getString("SubjectCode") + ":" + po.getInt("CatalogNbr"));
-                        if(po.getString("SubjectCode") != null && po.getInt("CatalogNbr") > 0)
-                            items.add(po.getString("SubjectCode") + po.getInt("CatalogNbr"));
+                        Log.d("Baid", subject + ":" + catNum);
+                        if(subject != null && catNum != null)
+                            items.add(subject + catNum);
 
                     }
 
@@ -197,8 +201,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
             if(allSchools != null){
 
                 ParseObject college = allSchools.get(position);
-                String code = college.getString("SchoolCode");
-
+                String code = college.getString("code");
                 loadDepartments(code);
 
             }
@@ -210,7 +213,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
             if(allDepartments != null){
 
                 ParseObject dep = allDepartments.get(position);
-                loadCourses(dep.getString("SubjectCode"));
+                loadCourses(dep.getString("code"));
 
             }
         }
