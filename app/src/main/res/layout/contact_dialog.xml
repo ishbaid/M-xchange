@@ -2,17 +2,25 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/back"
+    >
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="#00274c">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
             >
 
             <TextView
@@ -21,11 +29,12 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/seller"
                 android:id="@+id/seller"
+                android:textColor="@android:color/white"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:textColor="@android:color/white"
                 android:text="@string/title"
                 android:id="@+id/title"
                  />
@@ -34,21 +43,25 @@
                 android:layout_height="wrap_content"
                 android:text="@string/version"
                 android:id="@+id/version"
+                android:textColor="@android:color/white"
                  />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/course"
+                android:textColor="@android:color/white"
                 android:id="@+id/course"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/price"
-                android:id="@+id/price" />
+                android:textColor="@android:color/white"
+                android:id="@+id/price_edit" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/condition"
+                android:textColor="@android:color/white"
                 android:id="@+id/condition" />
 
              <LinearLayout
@@ -87,6 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:textColor="@android:color/white"
                 />
 
 

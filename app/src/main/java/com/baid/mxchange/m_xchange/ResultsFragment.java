@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
@@ -31,28 +31,47 @@ public class ResultsFragment extends Fragment implements AdapterView.OnItemClick
         subtitle = (TextView) rootView.findViewById(R.id.subtitle);
         queryResults = (ListView) rootView.findViewById(R.id.result_list);
 
-
-
-        //set subtitle
-        subtitle.setText("");
-
-        ArrayAdapter<String> adapter;
-
         //textbook
         if(MainActivity.book) {
 
             //set title
             title.setText(MainActivity.course);
-            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, MainActivity.searchResults.getSearchLabels());
+
+            double price = MainActivity.searchResults.getPriceVal();
+            if(price != -1){
+
+                    subtitle.setText("$" + price);
+            }
+            else
+                subtitle.setText("");
+
+            SimpleAdapter adapter = new SimpleAdapter(getActivity(), MainActivity.searchResults.getData(),
+                    android.R.layout.simple_list_item_2,
+                    new String[] {"title", "price"},
+                    new int[] {android.R.id.text1,
+                            android.R.id.text2});
+            queryResults.setAdapter(adapter);
+            //adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, MainActivity.searchResults.getSearchLabels());
         }
         //ticket
         else {
 
             title.setText(MainActivity.sportsGame.getString("opponent"));
-            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, MainActivity.ticketResults.getSearchLabels());
 
+            double price = MainActivity.ticketResults.getPriceVal();
+            if(price != -1){
+
+                subtitle.setText("$" + price);
+            }
+
+            SimpleAdapter adapter = new SimpleAdapter(getActivity(), MainActivity.ticketResults.getData(),
+                    android.R.layout.simple_list_item_2,
+                    new String[] {"game", "price"},
+                    new int[] {android.R.id.text1,
+                            android.R.id.text2});
+            queryResults.setAdapter(adapter);
         }
-        queryResults.setAdapter(adapter);
+
         queryResults.setOnItemClickListener(this);
 
         return rootView;
@@ -108,7 +127,15 @@ public class ResultsFragment extends Fragment implements AdapterView.OnItemClick
             Log.d("Baid", "Error: " + e.getMessage());
         }
 
-        dialog.setData(condition, description, edition, MainActivity.course, price, showNumber, title, name, number, email);
+        double numberToDisplay = -1;
+
+        if(number != null) {
+
+            numberToDisplay = number.doubleValue();
+            Log.d("Baid", "String number is " + number.toString());
+
+        }
+        dialog.setData(condition, description, edition, MainActivity.course, price, showNumber, title, name, numberToDisplay, email);
 
 
     }
@@ -122,6 +149,7 @@ public class ResultsFragment extends Fragment implements AdapterView.OnItemClick
         double price = ticket.getDouble("price");
         int row = ticket.getInt("row");
         int section = ticket.getInt("section");
+        boolean showNumber = ticket.getBoolean("showPhoneNumber");
 
         String name = null;
         Number number = 0;
@@ -144,8 +172,8 @@ public class ResultsFragment extends Fragment implements AdapterView.OnItemClick
             Log.d("Baid", "Error: " + e.getMessage());
         }
 
-
-        dialog.setData(price, row, section, false, name, number, email);
+        Log.d("Baid", "String number is " + number.toString());
+        dialog.setData(price, row, section, showNumber, name, number.doubleValue(), email);
 
 
     }

@@ -1,19 +1,12 @@
 package com.baid.mxchange.m_xchange;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.support.v4.app.FragmentActivity;
 
-import com.parse.LogInCallback;
+import com.facebook.AppEventsLogger;
 import com.parse.Parse;
-import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
 /*
@@ -21,97 +14,74 @@ import com.parse.ParseUser;
 * they will be redirected to dashboard
 *
 * */
-public class Login extends ActionBarActivity implements  View.OnClickListener{
+public class Login extends FragmentActivity{
 
-    LinearLayout background;
-    EditText email, password;
-    Button login;
-    TextView signup;
+    private LoginFragment mainFragment;
 
-    final static String UM_DOMAIN = "@umich.edu";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
+
+        //eventually uncomment this -- this for some reason was causing a crash in the app
+       //Parse.enableLocalDatastore(this);
+
+        //real database
+        //Parse.initialize(this, "Hv2s5UNlCaykyL5JxX5EIGYaxQrXAV6Ci2W6TikL", "nmVHe8v5c9pmDz9Wvh8o7zWQNKO88WVmtyKL56Hy");
 
         //TEST database
         Parse.initialize(this, "7ybxS3opTh2dYIeo0DLDguiqpvmtlanXoSCZzIdw", "xgenFXtatwsewpQ4YQiPXxC8V3qjPb9JbrFPls9n");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
 
-        email = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-
-        login = (Button)findViewById(R.id.login);
-        login.setOnClickListener(this);
-        signup = (TextView) findViewById(R.id.signup);
-        signup.setOnClickListener(this);
-
-
-        background = (LinearLayout) findViewById(R.id.background);
-
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        int id = view.getId();
-        if(id == signup.getId()){
-
-            Intent intent = new Intent(Login.this, Signup.class);
-            startActivity(intent);
+        //launches login fragment
+        if (savedInstanceState == null) {
+            // Add the fragment on initial activity setup
+            mainFragment = new LoginFragment();
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, mainFragment)
+                    .commit();
+        } else {
+            // Or set the fragment from restored state info
+            mainFragment = (LoginFragment) getFragmentManager()
+                    .findFragmentById(android.R.id.content);
         }
-        else if (id == login.getId()){
-
-           String empty = "";
 
 
-            String un = email.getText().toString() + UM_DOMAIN;
-            String pw = password.getText().toString();
-            ParseUser.logInInBackground(un, pw, new LogInCallback() {
-                @Override
-                public void done(ParseUser parseUser, ParseException e) {
-                    if(parseUser != null && e == null){
-
-                        Log.d("Baid", "Logged in!");
-                        Intent intent = new Intent(Login.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                    else if(e != null){
-
-                        clearText();
-                        email.setHint("Incorrect Email/Password");
-                        email.setHintTextColor(Color.RED);
-                        Log.d("Baid", "Error: " + e.getMessage());
-                    }
-                }
-            });
-
-
-
-        }
     }
-
-    private void clearText(){
-
-        email.setText("");
-        password.setText("");
-    }
-
-
 
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        //facebook metrics
+        AppEventsLogger.activateApp(this, getString(R.string.facebook_app_id));
+
+        //if user is already logged in, go to dashboard
         if(ParseUser.getCurrentUser() != null){
 
             Intent intent = new Intent(Login.this, MainActivity.class);
             startActivity(intent);
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //facebook metrics
+        AppEventsLogger.deactivateApp(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+//        LoginFragment fragment = ((LoginFragment) getFragmentManager().findFragmentById(android.R.id.content));
+//        fragment.onActivityResult(requestCode, resultCode,data);
+    }
+
+
 }

@@ -109,7 +109,9 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
                     }
                     Log.d("Baid", "Item size: " + items.size());
 
-                    school.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items));
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    school.setAdapter(adapter);
 
 
                 } else {
@@ -140,7 +142,12 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
                         items.add(objects.get(i).getString("description"));
                     }
-                    department.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items));
+
+                    if(getActivity() == null)
+                        return;
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    department.setAdapter(adapter);
                 }
             }
         });
@@ -185,7 +192,11 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
                     }
 
-                    course.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items));
+                    if(items == null)
+                        Log.d("Baid", "Null items");
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    course.setAdapter(adapter);
                 }
             }
         });

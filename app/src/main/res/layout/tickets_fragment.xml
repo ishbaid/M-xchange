@@ -3,29 +3,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@android:color/white">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="20dp"
+        android:text="Please select sport and opponent."
+        android:background="#dfdfdf"
+        />
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/spinner"
         android:layout_gravity="center_horizontal"
-        android:background="@android:color/white"
+        android:background="#ffcb05"
         android:layout_marginTop="50dp"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/games"
         android:layout_gravity="center_horizontal"
-        android:background="@android:color/white"
+        android:background="#ffcb05"
         android:layout_marginTop="50dp"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Next"
-        android:layout_marginTop="250dp"
+        android:background="#00274c"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="50dp"
         android:id="@+id/next"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

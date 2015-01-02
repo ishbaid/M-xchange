@@ -10,7 +10,9 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Ish on 12/16/14.
@@ -25,14 +27,19 @@ public class SearchTextbooks {
     //used to tell fragment when query has finished
     SearchInterface sInterface;
 
+    List<Map<String, String>> data;
+
     List <ParseObject> searchResults;
     ArrayList<String> searchLabels;
     ArrayList<String> priceLabels;
+    double priceVal = -1;
 
     public SearchTextbooks(SearchInterface si){
 
-        sInterface = si;
 
+        sInterface = si;
+        sInterface.onStart();
+        data = new ArrayList<Map<String, String>>();
         searchResults = new ArrayList<ParseObject>();
         searchLabels = new ArrayList<String>();
         priceLabels = new ArrayList<String>();
@@ -63,12 +70,28 @@ public class SearchTextbooks {
 
                 for(int i = 0; i < parseObjects.size(); i ++){
 
+                    Map<String, String> datum = new HashMap<String, String>(2);
+
                     ParseObject book = parseObjects.get(i);
                     String title = book.getString("title");
-                    double price = book.getDouble("price");
+                    Double price = book.getDouble("price");
 
-                    searchLabels.add(title);
-                    priceLabels.add(price + "");
+                    //title
+                    if(title != null)
+                        datum.put("title", title);
+                    else
+                        datum.put("title", "Unknown");
+
+                    //price
+                    if(price != null)
+                        datum.put("price", price + "");
+                    else
+                        datum.put("price", "Unknown");
+                    data.add(datum);
+                    if(title != null)
+                        searchLabels.add(title);
+                    if(price != null)
+                        priceLabels.add(price + "");
 
                     //labels.add(className + " " + title);
 
@@ -81,7 +104,7 @@ public class SearchTextbooks {
                             user.fetchIfNeeded();
                     }catch (ParseException e2){
 
-                        Log.d("Baid", e.getMessage());
+                        Log.d("Baid", e2.getMessage());
                     }
 
                     if(user != null){
@@ -97,13 +120,14 @@ public class SearchTextbooks {
                 }
 
                 //callback: Query is complete and results can be retieved
+
                 sInterface.onSearchComplete();
 
             }
         });
     }
 
-    public void createTextbookEntry(String condition, String desc, String edition, double priceValue, final String title){
+    public void createTextbookEntry(String condition, String desc, String edition, double priceValue, final String title, boolean showNumber){
 
         ParseObject textbook = new ParseObject("Textbook");
         textbook.put("class", MainActivity.course);
@@ -112,11 +136,11 @@ public class SearchTextbooks {
         textbook.put("edition", edition);
         textbook.put("price", priceValue);
         textbook.put("selling", !MainActivity.buy);
-        textbook.put("showPhoneNumber", false);
+        textbook.put("showPhoneNumber", showNumber);
         textbook.put("title", title);
         textbook.put("user", ParseUser.getCurrentUser());
 
-
+        priceVal = priceValue;
 
         textbook.saveInBackground(new SaveCallback() {
             @Override
@@ -132,6 +156,16 @@ public class SearchTextbooks {
 
             }
         });
+    }
+
+    public List<Map<String, String>> getData(){
+
+        return data;
+    }
+
+    public double getPriceVal(){
+
+        return priceVal;
     }
 
     public ArrayList<String> getSearchLabels(){

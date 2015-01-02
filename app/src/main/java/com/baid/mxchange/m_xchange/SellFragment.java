@@ -1,5 +1,6 @@
 package com.baid.mxchange.m_xchange;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,22 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.Switch;
 
 /**
  * Created by Ish on 9/6/14.
  */
 public class SellFragment extends Fragment implements View.OnClickListener{
 
-    EditText price, edition, name;
+    EditText price, edition, name, condition, description;
     Button confirm;
-    ListView results;
-
     double priceVal = -1;
     String nameVal = null;
     String editionVal = null;
+    Switch showNumber;
 
 
     @Nullable
@@ -32,14 +33,16 @@ public class SellFragment extends Fragment implements View.OnClickListener{
 
         View rootView = inflater.inflate(R.layout.activity_sell_, container, false);
 
-        price = (EditText) rootView.findViewById(R.id.price);
-        edition = (EditText) rootView.findViewById(R.id.row);
-        name = (EditText) rootView.findViewById(R.id.section);
-
-        results = (ListView) rootView.findViewById(R.id.spinner3);
+        price = (EditText) rootView.findViewById(R.id.price_edit);
+        edition = (EditText) rootView.findViewById(R.id.edition_edit);
+        name = (EditText) rootView.findViewById(R.id.title_edit);
+        condition = (EditText) rootView.findViewById(R.id.condition_edit);
+        description = (EditText) rootView.findViewById(R.id.description_edit);
 
         confirm = (Button) rootView.findViewById(R.id.confirm);
         confirm.setOnClickListener(this);
+
+        showNumber = (Switch) rootView.findViewById(R.id.show_number);
 
 
         return rootView;
@@ -50,6 +53,11 @@ public class SellFragment extends Fragment implements View.OnClickListener{
 
         int id = v.getId();
         if(id == confirm.getId()){
+
+
+            //hide keyboard
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
             //must enter price
             if(!price.getText().toString().equals("")){
@@ -64,6 +72,8 @@ public class SellFragment extends Fragment implements View.OnClickListener{
                 alertDialog.setCanceledOnTouchOutside(true);
                 alertDialog.show();
             }
+
+
 
             //edition is optional
             if(!edition.getText().toString().equals("")){
@@ -86,12 +96,19 @@ public class SellFragment extends Fragment implements View.OnClickListener{
                 alertDialog.show();
             }
 
-            if(priceVal != -1 && nameVal != null){
+            if(priceVal >= 0 && nameVal != null){
 
                 Log.d("Baid", "Ready to submit textbook");
 
+
+
+                String conditionText = condition.getText().toString();
+                String descriptionText = description.getText().toString();
+                String editionText = edition.getText().toString();
+
                 MainActivity.searchResults = new SearchTextbooks(MainActivity.searchInterface);
-                MainActivity.searchResults.createTextbookEntry("Condition", "Description", "Edition", priceVal, nameVal);
+
+                MainActivity.searchResults.createTextbookEntry(conditionText, descriptionText, editionText, priceVal, nameVal, showNumber.isChecked());
 
             }
         }

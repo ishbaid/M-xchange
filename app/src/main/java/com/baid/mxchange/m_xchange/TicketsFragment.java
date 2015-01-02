@@ -72,7 +72,9 @@ public class TicketsFragment extends Fragment implements View.OnClickListener, A
 
                 }
 
-                sports.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, allSports));
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, allSports);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                sports.setAdapter(adapter);
 
             }
         });
@@ -103,7 +105,11 @@ public class TicketsFragment extends Fragment implements View.OnClickListener, A
                     allGames.add(game.getString("opponent"));
                 }
 
-                games.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, allGames));
+                if(getActivity() == null)
+                    return;
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, allGames);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                games.setAdapter(adapter);
 
             }
         });

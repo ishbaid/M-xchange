@@ -1,15 +1,28 @@
 package com.baid.mxchange.m_xchange;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 /**
  * Created by Ish on 9/6/14.
@@ -27,10 +40,20 @@ public class MainActivity extends Activity {
     public static SearchTickets ticketResults;
     public static SearchInterface searchInterface;
 
+    private int phoneNumber = -1;
+
+    ProgressDialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Parse.initialize(this, "7ybxS3opTh2dYIeo0DLDguiqpvmtlanXoSCZzIdw", "xgenFXtatwsewpQ4YQiPXxC8V3qjPb9JbrFPls9n");super.onCreate(savedInstanceState);
+        //real database
+        //Parse.initialize(this, "Hv2s5UNlCaykyL5JxX5EIGYaxQrXAV6Ci2W6TikL", "nmVHe8v5c9pmDz9Wvh8o7zWQNKO88WVmtyKL56Hy");
+
+
+        //test database
+        Parse.initialize(this, "7ybxS3opTh2dYIeo0DLDguiqpvmtlanXoSCZzIdw", "xgenFXtatwsewpQ4YQiPXxC8V3qjPb9JbrFPls9n");
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         //for now we will load fragment 1, but I would like some sort of dashboard here later
 
@@ -40,7 +63,33 @@ public class MainActivity extends Activity {
         transaction.replace(R.id.frame, newFragment);
         transaction.commit();
 
+        //get whether or not new user
+        Intent intent = getIntent();
+        boolean isNewUser = intent.getBooleanExtra("newUser", false);
+
+        //if user is new, then we need to store the user's phone number as well retrieve data from facebook
+        if (isNewUser) {
+
+            //get phone number
+            phoneNumberDialog();
+
+            // Fetch Facebook user info if the session is active
+            Session session = ParseFacebookUtils.getSession();
+            if (session != null && session.isOpened()) {
+                makeMeRequest();
+            }
+
+        }
+
         searchInterface = new SearchInterface() {
+
+            @Override
+            public void onStart() {
+
+                loadingDialog = ProgressDialog.show(MainActivity.this, "",
+                        "Loading. Please wait...", true);
+            }
+
             @Override
             public void onSearchComplete() {
 
@@ -50,10 +99,113 @@ public class MainActivity extends Activity {
                 transaction.replace(R.id.frame, resultsFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+
+                if (loadingDialog != null)
+                    loadingDialog.dismiss();
             }
 
 
         };
+
+    }
+
+
+    private void phoneNumberDialog() {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Enter Phone Number");
+        alert.setMessage("Don't worry, we won't share it with anyone without your permission");
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_PHONE);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString();
+
+                try{
+
+                    phoneNumber = Integer.parseInt(value);
+                    Log.d("Baid", "Number: " + phoneNumber);
+                }catch (NumberFormatException e){
+
+
+                }
+
+
+                // Do something with value!
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+    }
+
+    private void makeMeRequest() {
+
+        Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),
+                new Request.GraphUserCallback() {
+                    @Override
+                    public void onCompleted(GraphUser user, Response response) {
+                        // handle response
+                        if (user != null) {
+
+                            String firstName = user.getFirstName();
+                            String lastName = user.getLastName();
+                            String id = user.getId();
+                            String email = user.getProperty("email").toString();
+
+                            Log.e("facebookid", id);
+                            Log.e("firstName", firstName);
+                            Log.e("lastName", lastName);
+                            Log.e("email", email);
+
+                            ParseUser currentUser = ParseUser.getCurrentUser();
+
+                            currentUser.put("email", email);
+                            currentUser.put("firstName", firstName);
+                            currentUser.put("lastName", lastName);
+
+                            if(phoneNumber != -1)
+                                currentUser.put("phone", phoneNumber);
+
+                            currentUser.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+
+                                    if(e != null){
+
+                                        Log.d("Baid","Error: " + e.getMessage());
+                                        return;
+                                    }
+
+                                    Log.d("Baid", "User saved with Facebook information");
+
+                                }
+                            });
+
+
+                        } else if (response.getError() != null) {
+                            // handle error
+                            Log.d("Baid", "Error retrieving Facebook information");
+                        }
+                    }
+                });
+        request.executeAsync();
+
+    }
+
+    //if user has same email as existing user, link users.
+    private void userAlreadyExists(){
+
 
     }
 
@@ -72,10 +224,27 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.logout) {
 
+           if(ParseFacebookUtils.getSession().isOpened())
+                ParseFacebookUtils.getSession().closeAndClearTokenInformation();
             ParseUser.logOut();
+
             Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.profile) {
+
+            ProfileFragment resultsFragment = new ProfileFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, resultsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (id == R.id.info) {
+
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Information");
+            alertDialog.setMessage(getString(R.string.info));
+            alertDialog.setCanceledOnTouchOutside(true);
+            alertDialog.show();
         }
 
         return super.onOptionsItemSelected(item);

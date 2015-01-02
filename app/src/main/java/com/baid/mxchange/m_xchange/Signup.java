@@ -29,15 +29,19 @@ public class Signup extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Parse.initialize(this, "Hv2s5UNlCaykyL5JxX5EIGYaxQrXAV6Ci2W6TikL", "nmVHe8v5c9pmDz9Wvh8o7zWQNKO88WVmtyKL56Hy");
+        //real databse
+        //Parse.initialize(this, "Hv2s5UNlCaykyL5JxX5EIGYaxQrXAV6Ci2W6TikL", "nmVHe8v5c9pmDz9Wvh8o7zWQNKO88WVmtyKL56Hy");
+
+        //test database
+        Parse.initialize(this, "7ybxS3opTh2dYIeo0DLDguiqpvmtlanXoSCZzIdw", "xgenFXtatwsewpQ4YQiPXxC8V3qjPb9JbrFPls9n");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_activity);
 
-        first = (EditText) findViewById(R.id.price);
+        first = (EditText) findViewById(R.id.price_edit);
         last =  (EditText) findViewById(R.id.last);
         email = (EditText) findViewById(R.id.username);
-        phone = (EditText) findViewById(R.id.row);
+        phone = (EditText) findViewById(R.id.row_edit);
         password = (EditText) findViewById(R.id.password);
         password2 = (EditText) findViewById(R.id.password2);
 
@@ -60,7 +64,12 @@ public class Signup extends Activity {
                         @Override
                         public void done(List<ParseUser> objects, ParseException e) {
 
-                            if(e == null){
+                            if(e != null){
+
+                                resetAndError();
+                                return;
+
+                            }
 
                                 if(objects.size() == 0){
 
@@ -88,6 +97,7 @@ public class Signup extends Activity {
                                             }
                                             else{
 
+                                                resetAndError();
                                                 Log.d("Baid", "Error signing up!" + e.getMessage());
                                             }
                                         }
@@ -111,7 +121,7 @@ public class Signup extends Activity {
 
                                     Log.d("Baid", "Error. Duplicate accounts may exist");
                                 }
-                            }
+
                         }
                     });
 
@@ -132,5 +142,19 @@ public class Signup extends Activity {
 
 
 
+    }
+
+    private void resetAndError(){
+
+
+        first.setText("");
+        last.setText("");
+        email.setText("");
+
+        AlertDialog alertDialog = new AlertDialog.Builder(Signup.this).create();
+        alertDialog.setTitle("Error ");
+        alertDialog.setMessage("Invalid information");
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
     }
 }
