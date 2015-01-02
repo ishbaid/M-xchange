@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.baid.mxchange.m_xchange.WriteReviewFragment"
+    android:orientation="vertical">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/review_write_title"
+    android:text="@string/course"
+    android:layout_gravity="center"
+    android:layout_marginTop="20dp"
+    android:textSize="36dp"
+    />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/write_rating"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/write_review"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/review_hint"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/anon_label"
+        android:id="@+id/anon"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_label"
+        android:id="@+id/write_submit"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+
+</LinearLayout>

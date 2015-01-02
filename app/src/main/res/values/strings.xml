@@ -8,6 +8,14 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="blue_review">Blue Reviews</string>
+    <string name="read_label">Read Reviews</string>
+    <string name="avg_label">Course Rating: </string>
+    <string name="write_review_label">Write a Review!</string>
+    <string name="review_hint">Write a review of the course here. Tell us what you thought about it!</string>
+    <string name="submit_label">Submit</string>
+    <string name="anon_label">Anonymous</string>
+
     <!-- Dialog text values-->
     <string name="seller">Seller: </string>
     <string name="title">Title: </string>

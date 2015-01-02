@@ -75,7 +75,18 @@ public class UserPostsFragment extends Fragment implements AdapterView.OnItemCli
 
                 allPosts = parseObjects;
 
+                if(parseObjects.size() == 0){
+
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("Alert ");
+                    alertDialog.setMessage("You have no posts at this time!");
+                    alertDialog.setCanceledOnTouchOutside(true);
+                    alertDialog.show();
+                    return;
+                }
+
                 ArrayList<String> postLabels = new ArrayList<String>();
+
                 for(int i = 0; i < parseObjects.size(); i ++){
 
                     ParseObject post = parseObjects.get(i);

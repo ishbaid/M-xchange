@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,75 +21,67 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by Ish on 9/6/14.
  */
-public class SelectCourseFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ReviewSelectFragment extends Fragment implements AdapterView.OnItemSelectedListener  {
+
 
     Spinner school, department, course;
     List<ParseObject> allSchools, allDepartments, allCourse;
-    Button next;
-    @Nullable
+
+    Button readReviews;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_review_select, container, false);
 
-        View rootView = inflater.inflate(R.layout.select_course, container, false);
 
-        school = (Spinner) rootView.findViewById(R.id.school);
-        school.setOnItemSelectedListener(this);
 
-        department = (Spinner) rootView.findViewById(R.id.department);
-        department.setOnItemSelectedListener(this);
+        school = (Spinner) rootView.findViewById(R.id.r_college);
+        department = (Spinner) rootView.findViewById(R.id.r_department);
+        course = (Spinner) rootView.findViewById(R.id.r_course);
 
-        course = (Spinner) rootView.findViewById(R.id.course);
-        course.setOnItemSelectedListener(this);
-
-        next = (Button) rootView.findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener(){
-
+        readReviews = (Button) rootView.findViewById(R.id.read_button);
+        readReviews.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
-                Log.d("Baid", "Course selected: " + MainActivity.course);
+                if(MainActivity.reviewCourse != null){
 
-                if(MainActivity.buy != null){
-
-                    //start buy
-                    if(MainActivity.buy == true){
-
-
-                        BuyFragment newFragment = new BuyFragment();
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame, newFragment);
-                        transaction.addToBackStack(null);
-                        // Commit the transaction
-                        transaction.commit();
-                    }
-                    //start sell
-                    else{
-
-                        SellFragment newFragment = new SellFragment();
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame, newFragment);
-                        transaction.addToBackStack(null);
-                        // Commit the transaction
-                        transaction.commit();
-                    }
-
-                    }
+                    String courseName = MainActivity.reviewCourse.getString("subject") + MainActivity.reviewCourse.getString("catalogNumber");
+                    Log.d("Baid", "Reviews of " + courseName);
+                }
                 else{
 
-                    Log.d("Baid", "Error. Buy not initialized");
+                    Log.d("Baid", "No course has been selected");
+                    return;
                 }
 
-                }
-
+                ReadReviewFragment resultsFragment = new ReadReviewFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame, resultsFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
         });
+
+        school.setOnItemSelectedListener(this);
+        department.setOnItemSelectedListener(this);
+        course.setOnItemSelectedListener(this);
 
         allSchools = new ArrayList<ParseObject>();
         allDepartments = new ArrayList<ParseObject>();
         allCourse = new ArrayList<ParseObject>();
 
+        loadSchools();
+
+        return rootView;
+    }
+
+    private void loadSchools(){
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Schools");
         query.whereExists("code");
@@ -119,8 +110,6 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
                 }
             }
         });
-        return rootView;
-
     }
 
     private void loadDepartments(String code){
@@ -235,14 +224,12 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
             Log.d("Baid", "Course selected");
             if(course.getAdapter().getCount() > 0) {
 
-                String cc = (String) course.getSelectedItem();
-                MainActivity.course = cc;
+                MainActivity.reviewCourse = allCourse.get(position);
 
             }
             else if(course.getAdapter().getCount() == 0){
 
-                String dep = (String) department.getSelectedItem();
-                MainActivity.course = dep;
+                MainActivity.reviewCourse = null;
             }
         }
     }

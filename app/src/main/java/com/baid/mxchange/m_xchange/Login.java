@@ -58,6 +58,8 @@ public class Login extends FragmentActivity{
         //facebook metrics
         AppEventsLogger.activateApp(this, getString(R.string.facebook_app_id));
 
+        ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
+
         //if user is already logged in, go to dashboard
         if(ParseUser.getCurrentUser() != null){
 
@@ -78,9 +80,8 @@ public class Login extends FragmentActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //logs in user via facebook
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
-//        LoginFragment fragment = ((LoginFragment) getFragmentManager().findFragmentById(android.R.id.content));
-//        fragment.onActivityResult(requestCode, resultCode,data);
     }
 
 

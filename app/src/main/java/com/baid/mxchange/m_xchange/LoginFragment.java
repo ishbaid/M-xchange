@@ -25,7 +25,9 @@ import java.util.Arrays;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Login screen
+ *
+ * User can either log in via a Blue Exchange account or Facebook
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
@@ -69,8 +71,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 onLoginButtonClicked();
             }
         });
-        //authButton.setReadPermissions(Arrays.asList("public_profile"));
-
 
         return rootView;
     }
@@ -79,27 +79,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
 
         int id = v.getId();
-        if(id == signup.getId()){
+
+        //Launch sign up activity
+        if (id == signup.getId()) {
 
             Intent intent = new Intent(getActivity(), Signup.class);
             startActivity(intent);
         }
-        else if (id == login.getId()){
+
+        //attempt to login user
+        else if (id == login.getId()) {
 
             String un = email.getText().toString() + UM_DOMAIN;
             String pw = password.getText().toString();
             ParseUser.logInInBackground(un, pw, new LogInCallback() {
                 @Override
                 public void done(ParseUser parseUser, ParseException e) {
+
+                    //successfull login
                     if (parseUser != null && e == null) {
 
                         Log.d("Baid", "Logged in!");
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
-                    } else if (e != null) {
+                    }
+
+                    //ERROR
+                    else if (e != null) {
 
                         clearText();
-                        email.setHint("Incorrect Email/Password");
+                        email.setHint("ERROR");
                         email.setHintTextColor(Color.RED);
                         Log.d("Baid", "Error: " + e.getMessage());
                     }
@@ -107,23 +116,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             });
 
 
-
         }
     }
 
-    //do
-    private void onLoginButtonClicked(){
+    //Facebook login
+    private void onLoginButtonClicked() {
 
         Log.d("Baid", "onLoginButtonClicked");
 
-        new AsyncTask<Void, Void, Object>(){
+        //login user on another thread
+        new AsyncTask<Void, Void, Object>() {
 
 
             @Override
             protected Object doInBackground(Void... params) {
 
                 Log.d("Baid", "doInBackground");
-                //ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+
+                //attempt to login user
                 ParseFacebookUtils.logIn(Arrays.asList("email", ParseFacebookUtils.Permissions.Friends.ABOUT_ME),
                         getActivity(), new LogInCallback() {
                             @Override
@@ -145,7 +155,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                     intent.putExtra("newUser", false);
                                 }
 
-
+                                //launches dashboard
                                 startActivity(intent);
                             }
                         });
@@ -156,107 +166,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }.execute();
 
 
-
     }
 
-    private void clearText(){
+    private void clearText() {
 
         email.setText("");
         password.setText("");
     }
-
-
-
-
-//    private UiLifecycleHelper uiHelper;
-//    private Session.StatusCallback callback = new Session.StatusCallback() {
-//        @Override
-//        public void call(Session session, SessionState state, Exception exception) {
-//            onSessionStateChange(session, state, exception);
-//
-//        }
-//    };
-//
-//    private void onSessionStateChange(com.facebook.Session session, SessionState state, Exception exception) {
-//
-//        //user is logged in
-//        if (state.isOpened()) {
-//
-//
-//            Log.i(TAG, "Logged in...");
-//            // Request user data and show the results
-//            Request.newMeRequest(session, new Request.GraphUserCallback() {
-//
-//                // callback after Graph API response with user object
-//                @Override
-//                public void onCompleted(GraphUser user, Response response) {
-//                    if (user != null) {
-//
-//                        String firstName = user.getFirstName();
-//                        String lastName = user.getLastName();
-//                        String id = user.getId();
-//                        String email = user.getProperty("email").toString();
-//
-//                        Log.e("facebookid", id);
-//                        Log.e("firstName", firstName);
-//                        Log.e("lastName", lastName);
-//                        Log.e("email", email);
-//                    }
-//                }
-//            }).executeAsync();
-//
-//        } else if (state.isClosed()) {
-//            Log.i(TAG, "Logged out...");
-//        }
-//    }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        uiHelper = new UiLifecycleHelper(getActivity(), callback);
-//        uiHelper.onCreate(savedInstanceState);
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        // For scenarios where the main activity is launched and user
-//        // session is not null, the session state change notification
-//        // may not be triggered. Trigger it if it's open/closed.
-//        Session session = Session.getActiveSession();
-//        if (session != null &&
-//                (session.isOpened() || session.isClosed()) ) {
-//            onSessionStateChange(session, session.getState(), null);
-//        }
-//
-//        uiHelper.onResume();
-//
-//    }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        uiHelper.onActivityResult(requestCode, resultCode, data);
-//
-//    }
-//
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        uiHelper.onPause();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        uiHelper.onDestroy();
-//    }
-//
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        uiHelper.onSaveInstanceState(outState);
-//    }
 }

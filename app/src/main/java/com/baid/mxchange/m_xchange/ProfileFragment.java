@@ -14,7 +14,7 @@ import android.widget.Button;
  */
 public class ProfileFragment  extends Fragment implements View.OnClickListener{
 
-    Button exchange, myTextbooks, myTickets;
+    Button exchange, myTextbooks, myTickets, blueReview;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,10 +23,12 @@ public class ProfileFragment  extends Fragment implements View.OnClickListener{
         exchange = (Button) rootView.findViewById(R.id.exchange);
         myTextbooks = (Button) rootView.findViewById(R.id.my_textbooks);
         myTickets = (Button) rootView.findViewById(R.id.my_tickets);
+        blueReview = (Button) rootView.findViewById(R.id.blue_review);
 
         exchange.setOnClickListener(this);
         myTextbooks.setOnClickListener(this);
         myTickets.setOnClickListener(this);
+        blueReview.setOnClickListener(this);
 
         return rootView;
     }
@@ -66,6 +68,15 @@ public class ProfileFragment  extends Fragment implements View.OnClickListener{
             transaction.addToBackStack(null);
             transaction.commit();
 
+        }
+        else if(id == blueReview.getId()){
+
+
+            ReviewSelectFragment newFragment = new ReviewSelectFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, newFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 }

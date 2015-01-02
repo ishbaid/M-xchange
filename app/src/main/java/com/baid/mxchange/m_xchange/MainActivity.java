@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
     public static Boolean book;
     public static String course;
     public static ParseObject sportsGame;
+    public static ParseObject reviewCourse;
 
 
     public static SearchTextbooks searchResults;
@@ -130,13 +131,18 @@ public class MainActivity extends Activity {
 
                     phoneNumber = Integer.parseInt(value);
                     Log.d("Baid", "Number: " + phoneNumber);
+
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    currentUser.put("phone", phoneNumber);
+                    currentUser.saveInBackground();
+
                 }catch (NumberFormatException e){
 
 
+                    Log.d("Baid", "Number format exception");
                 }
 
 
-                // Do something with value!
             }
         });
 
@@ -174,8 +180,6 @@ public class MainActivity extends Activity {
                             currentUser.put("firstName", firstName);
                             currentUser.put("lastName", lastName);
 
-                            if(phoneNumber != -1)
-                                currentUser.put("phone", phoneNumber);
 
                             currentUser.saveInBackground(new SaveCallback() {
                                 @Override
@@ -224,21 +228,30 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.logout) {
 
-           if(ParseFacebookUtils.getSession().isOpened())
+            //logout facebook user
+           if(ParseFacebookUtils.getSession() != null && ParseFacebookUtils.getSession().isOpened())
                 ParseFacebookUtils.getSession().closeAndClearTokenInformation();
+
+            //logout parse user
             ParseUser.logOut();
 
             Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.profile) {
+        }
+
+        //return user to dashboard
+        else if (id == R.id.profile) {
 
             ProfileFragment resultsFragment = new ProfileFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.frame, resultsFragment);
             transaction.addToBackStack(null);
             transaction.commit();
-        } else if (id == R.id.info) {
+        }
+
+        //get information about application
+        else if (id == R.id.info) {
 
             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
             alertDialog.setTitle("Information");

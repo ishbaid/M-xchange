@@ -13,8 +13,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="56dp" />
 
-
-
     <Button
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -47,5 +45,15 @@
         android:id="@+id/my_tickets"
         android:layout_below="@+id/my_textbooks"
         android:layout_centerHorizontal="true" />
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/blue_review"
+        android:layout_marginTop="10dp"
+        android:background="#00274c"
+        android:textColor="@android:color/white"
+        android:id="@+id/blue_review"
+        android:layout_below="@+id/exchange"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

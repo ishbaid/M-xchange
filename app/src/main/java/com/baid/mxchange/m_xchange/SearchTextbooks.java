@@ -83,7 +83,7 @@ public class SearchTextbooks {
                         datum.put("title", "Unknown");
 
                     //price
-                    if(price != null)
+                    if(price != null &&  price > 0)
                         datum.put("price", price + "");
                     else
                         datum.put("price", "Unknown");
