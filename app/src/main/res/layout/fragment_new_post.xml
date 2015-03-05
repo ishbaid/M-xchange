@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.baid.mxchange.m_xchange.NewPostFragment">
+
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Buy"
+        android:textOff="Sell"
+        android:id="@+id/post_type_switch"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:checked="false" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textbook_name"
+        android:hint="Textbook Name"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/textbook_price"
+        android:hint="Price"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textbook_edition"
+        android:hint="Edition"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/condition_spinner"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/textbook_description"
+        android:hint="Description"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submit_button"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+
+</LinearLayout>

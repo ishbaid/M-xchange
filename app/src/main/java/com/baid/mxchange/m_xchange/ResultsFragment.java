@@ -31,46 +31,27 @@ public class ResultsFragment extends Fragment implements AdapterView.OnItemClick
         subtitle = (TextView) rootView.findViewById(R.id.subtitle);
         queryResults = (ListView) rootView.findViewById(R.id.result_list);
 
-        //textbook
-        if(MainActivity.book) {
 
-            //set title
-            title.setText(MainActivity.course);
+        //set title
+        title.setText(MainActivity.course);
 
-            double price = MainActivity.searchResults.getPriceVal();
-            if(price != -1){
-
-                    subtitle.setText("$" + price);
-            }
-            else
-                subtitle.setText("");
-
-            SimpleAdapter adapter = new SimpleAdapter(getActivity(), MainActivity.searchResults.getData(),
-                    android.R.layout.simple_list_item_2,
-                    new String[] {"title", "price"},
-                    new int[] {android.R.id.text1,
-                            android.R.id.text2});
-            queryResults.setAdapter(adapter);
-            //adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, MainActivity.searchResults.getSearchLabels());
-        }
-        //ticket
-        else {
-
-            title.setText(MainActivity.sportsGame.getString("opponent"));
-
-            double price = MainActivity.ticketResults.getPriceVal();
-            if(price != -1){
+        double price = MainActivity.searchResults.getPriceVal();
+        if(price != -1){
 
                 subtitle.setText("$" + price);
-            }
-
-            SimpleAdapter adapter = new SimpleAdapter(getActivity(), MainActivity.ticketResults.getData(),
-                    android.R.layout.simple_list_item_2,
-                    new String[] {"game", "price"},
-                    new int[] {android.R.id.text1,
-                            android.R.id.text2});
-            queryResults.setAdapter(adapter);
         }
+        else
+            subtitle.setText("");
+
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), MainActivity.searchResults.getData(),
+                android.R.layout.simple_list_item_2,
+                new String[] {"title", "price"},
+                new int[] {android.R.id.text1,
+                        android.R.id.text2});
+        queryResults.setAdapter(adapter);
+        //adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, MainActivity.searchResults.getSearchLabels());
+
+
 
         queryResults.setOnItemClickListener(this);
 

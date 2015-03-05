@@ -1,6 +1,7 @@
 package com.baid.mxchange.m_xchange;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -94,6 +96,10 @@ public class WriteReviewFragment extends Fragment implements View.OnClickListene
                     alertDialog.setMessage("Thanks for submitting the review! Your feedback is going to help Michigan students better select courses");
                     alertDialog.setCanceledOnTouchOutside(true);
                     alertDialog.show();
+
+                    //hide keyboard
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
                     //return user to dashboard
                     ProfileFragment resultsFragment = new ProfileFragment();

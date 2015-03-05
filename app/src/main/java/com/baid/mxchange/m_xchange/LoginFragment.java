@@ -1,6 +1,7 @@
 package com.baid.mxchange.m_xchange;
 
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
@@ -110,6 +111,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         clearText();
                         email.setHint("ERROR");
                         email.setHintTextColor(Color.RED);
+
+                        //tell user what is wrong
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                        alertDialog.setTitle("Error");
+                        alertDialog.setMessage(e.getMessage());
+                        alertDialog.setCanceledOnTouchOutside(true);
+                        alertDialog.show();
+
+
                         Log.d("Baid", "Error: " + e.getMessage());
                     }
                 }
@@ -138,6 +148,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         getActivity(), new LogInCallback() {
                             @Override
                             public void done(ParseUser user, ParseException err) {
+
+
+                                if(err != null){
+
+                                    //tell user what is wrong
+                                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                                    alertDialog.setTitle("Error");
+                                    alertDialog.setMessage(err.getMessage());
+                                    alertDialog.setCanceledOnTouchOutside(true);
+                                    alertDialog.show();
+                                    return;
+                                }
 
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                 Log.d("Baid", "Log in is complete");

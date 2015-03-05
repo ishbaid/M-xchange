@@ -24,8 +24,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/school"
-        android:spinnerMode="dropdown"
-        android:background="#ffcb05"
         />
 
     <Spinner
@@ -35,9 +33,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/department"
-        android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown"
-        android:background="#ffcb05"/>
+        android:layout_gravity="center_horizontal"/>
 
     <Spinner
         android:layout_marginTop="40dp"
@@ -46,17 +42,25 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/course"
-        android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown"
-        android:background="#ffcb05"/>
+        android:layout_gravity="center_horizontal"/>
 
     <Button
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Next"
         android:background="#00274c"
         android:textColor="@android:color/white"
         android:id="@+id/next"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_marginTop="5dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/browse_label"
+        android:background="#00274c"
+        android:textColor="@android:color/white"
+        android:id="@+id/browse_button"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

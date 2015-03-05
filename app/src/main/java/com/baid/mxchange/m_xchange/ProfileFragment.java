@@ -15,6 +15,7 @@ import android.widget.Button;
 public class ProfileFragment  extends Fragment implements View.OnClickListener{
 
     Button exchange, myTextbooks, myTickets, blueReview;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class ProfileFragment  extends Fragment implements View.OnClickListener{
         myTextbooks.setOnClickListener(this);
         myTickets.setOnClickListener(this);
         blueReview.setOnClickListener(this);
+
 
         return rootView;
     }
@@ -78,5 +80,6 @@ public class ProfileFragment  extends Fragment implements View.OnClickListener{
             transaction.addToBackStack(null);
             transaction.commit();
         }
+
     }
 }

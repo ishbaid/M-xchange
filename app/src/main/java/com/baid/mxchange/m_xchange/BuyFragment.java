@@ -36,7 +36,9 @@ public class BuyFragment extends Fragment implements View.OnClickListener {
         name = (EditText) rootView.findViewById(R.id.last);
 
         confirm = (Button) rootView.findViewById(R.id.confirm);
+
         confirm.setOnClickListener(this);
+
 
         showNumber = (Switch) rootView.findViewById(R.id.show_number);
 
@@ -107,6 +109,7 @@ public class BuyFragment extends Fragment implements View.OnClickListener {
             }
 
         }
+
     }
 
 

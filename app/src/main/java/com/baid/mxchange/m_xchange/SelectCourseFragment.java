@@ -29,7 +29,9 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
     Spinner school, department, course;
     List<ParseObject> allSchools, allDepartments, allCourse;
-    Button next;
+    Button next, browse;
+
+    final static String TAG = "SelectCourseFragment";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,40 +53,32 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onClick(View view) {
 
-                Log.d("Baid", "Course selected: " + MainActivity.course);
+            Log.d(TAG, "Course selected: " + MainActivity.course);
+            NewPostFragment resultsFragment = new NewPostFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, resultsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
 
-                if(MainActivity.buy != null){
-
-                    //start buy
-                    if(MainActivity.buy == true){
-
-
-                        BuyFragment newFragment = new BuyFragment();
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame, newFragment);
-                        transaction.addToBackStack(null);
-                        // Commit the transaction
-                        transaction.commit();
-                    }
-                    //start sell
-                    else{
-
-                        SellFragment newFragment = new SellFragment();
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame, newFragment);
-                        transaction.addToBackStack(null);
-                        // Commit the transaction
-                        transaction.commit();
-                    }
-
-                    }
-                else{
-
-                    Log.d("Baid", "Error. Buy not initialized");
-                }
 
                 }
 
+        });
+
+        browse = (Button) rootView.findViewById(R.id.browse_button);
+        browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int id = v.getId();
+                //just show textbooks
+                if(MainActivity.course != null && id == browse.getId()){
+
+                    Log.d("Baid", "Browse pressed");
+                    MainActivity.searchResults = new SearchTextbooks(MainActivity.searchInterface);
+
+                }
+            }
         });
 
         allSchools = new ArrayList<ParseObject>();
@@ -108,6 +102,12 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
                     }
                     Log.d("Baid", "Item size: " + items.size());
+
+                    if(getActivity() == null){
+
+                        return;
+
+                    }
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -193,8 +193,9 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
                     }
 
-                    if(items == null)
-                        Log.d("Baid", "Null items");
+                    if(getActivity() == null) {
+                        return;
+                    }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     course.setAdapter(adapter);

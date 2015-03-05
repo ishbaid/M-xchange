@@ -23,9 +23,6 @@ public class Login extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
 
 
-        //eventually uncomment this -- this for some reason was causing a crash in the app
-       //Parse.enableLocalDatastore(this);
-
         //real database
         //Parse.initialize(this, "Hv2s5UNlCaykyL5JxX5EIGYaxQrXAV6Ci2W6TikL", "nmVHe8v5c9pmDz9Wvh8o7zWQNKO88WVmtyKL56Hy");
 

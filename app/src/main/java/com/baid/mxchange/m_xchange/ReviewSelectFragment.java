@@ -100,6 +100,8 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
                     }
                     Log.d("Baid", "Item size: " + items.size());
 
+                    if(getActivity() == null)
+                        return;
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     school.setAdapter(adapter);
@@ -182,8 +184,11 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
 
                     }
 
-                    if(items == null)
-                        Log.d("Baid", "Null items");
+                    if(getActivity() == null) {
+
+                        return;
+                    }
+
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     course.setAdapter(adapter);

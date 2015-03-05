@@ -8,6 +8,9 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Misc-->
+    <string name="browse_label">Browse</string>
+
     <string name="blue_review">Blue Reviews</string>
     <string name="read_label">Read Reviews</string>
     <string name="avg_label">Course Rating: </string>
@@ -30,6 +33,5 @@
     <string name="email">Email</string>
 
     <string name="info">Blue Exchange is in its early stage of launch and is still under construction. Having problems? Have a suggestion? Email me at ishbaid@umich.edu and I\'ll be sure to use your feedback to improve Blue Exchange. \n\n Thanks!</string>
-
 
 </resources>

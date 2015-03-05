@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.baid.mxchange.m_xchange.TBPFragment"
+    android:orientation="vertical">
+
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Tau Beta Pi Book Swap\n EECS lounge \n(next to dB cafe)"
+        android:textSize="28dp"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        android:text="What is the Tau Beta Pi Book Swap? "/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:textSize="16dp"
+        android:text="A way for students to buy cheap textbooks and easily sell old textbooks.\nMore info at: tbpbookswap.org"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        android:text="Drop off your books: "/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:text="Wed. Jan. 7th, 10 AM - 5PM \n Thurs. Jan. 8th 10 AM - 5 PM"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        android:text="Buy books: "/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:text="Fri. Jan. 9th, 10 AM - 6PM \n Mon. Jan. 12th 10 AM - 4 PM"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        android:text="Pick up money/unsold books: "/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:text="Tues. Jan. 20th, 10 AM - 5PM \n Wed. Jan. 21th 10 AM - 5 PM"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+</LinearLayout>

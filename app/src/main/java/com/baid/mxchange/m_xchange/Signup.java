@@ -66,6 +66,12 @@ public class Signup extends Activity {
 
                             if(e != null){
 
+                                //tell user what is wrong
+                                AlertDialog alertDialog = new AlertDialog.Builder(Signup.this).create();
+                                alertDialog.setTitle("Error");
+                                alertDialog.setMessage(e.getMessage());
+                                alertDialog.setCanceledOnTouchOutside(true);
+                                alertDialog.show();
                                 resetAndError();
                                 return;
 
@@ -151,10 +157,5 @@ public class Signup extends Activity {
         last.setText("");
         email.setText("");
 
-        AlertDialog alertDialog = new AlertDialog.Builder(Signup.this).create();
-        alertDialog.setTitle("Error ");
-        alertDialog.setMessage("Invalid information");
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.show();
     }
 }

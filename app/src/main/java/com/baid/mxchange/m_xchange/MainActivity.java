@@ -259,6 +259,15 @@ public class MainActivity extends Activity {
             alertDialog.setCanceledOnTouchOutside(true);
             alertDialog.show();
         }
+        else if (id == R.id.new_post){
+
+            SelectCourseFragment resultsFragment = new SelectCourseFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, resultsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        }
 
         return super.onOptionsItemSelected(item);
     }

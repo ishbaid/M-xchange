@@ -72,6 +72,11 @@ public class TicketsFragment extends Fragment implements View.OnClickListener, A
 
                 }
 
+                if(getActivity() == null){
+
+                    return;
+                }
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, allSports);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 sports.setAdapter(adapter);
@@ -105,7 +110,7 @@ public class TicketsFragment extends Fragment implements View.OnClickListener, A
                     allGames.add(game.getString("opponent"));
                 }
 
-                if(getActivity() == null)
+                if(getActivity() == null || allGames == null)
                     return;
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, allGames);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
