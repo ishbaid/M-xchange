@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
@@ -168,21 +167,21 @@ public class ReadReviewFragment extends Fragment implements View.OnClickListener
             Log.d("Baid", e.getMessage());
         }
 
-        View dialogView = View.inflate(getActivity(), R.layout.review_dialog, null);
+        View dialogView = View.inflate(getActivity(), R.layout.review_layout, null);
 
-        RatingBar ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBar);
-        ratingBar.setIsIndicator(true);
-        TextView messageLabel = (TextView) dialogView.findViewById(R.id.textView);
+//        RatingBar ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBar);
+//        ratingBar.setIsIndicator(true);
+//        TextView messageLabel = (TextView) dialogView.findViewById(R.id.textView);
         final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
         alert.setView(dialogView);
 
         if(rating != null) {
 
-            Log.d("Baid", "Num stars is " + ratingBar.getNumStars());
-            Log.d("Baid", "Step stars is " + ratingBar.getStepSize());
-            Log.d("Baid", "Rating is " + rating.floatValue());
-            ratingBar.setRating(rating.floatValue());
+//            Log.d("Baid", "Num stars is " + ratingBar.getNumStars());
+//            Log.d("Baid", "Step stars is " + ratingBar.getStepSize());
+//            Log.d("Baid", "Rating is " + rating.floatValue());
+//            ratingBar.setRating(rating.floatValue());
         }
 
         //displays review content
@@ -190,10 +189,10 @@ public class ReadReviewFragment extends Fragment implements View.OnClickListener
             alert.setTitle("Anonymous");
         else
             alert.setTitle(userName);
-        if(text != null)
-            messageLabel.setText(text);
-        else
-            messageLabel.setText("");
+//        if(text != null)
+//            messageLabel.setText(text);
+//        else
+//            messageLabel.setText("");
 
         //creates dismiss button
         alert.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
