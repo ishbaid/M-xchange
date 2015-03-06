@@ -125,7 +125,14 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
 
 
 
-                String conditionText = condition.getSelectedItem().toString();
+                String conditionText;
+                //selling
+                if(!postType.isChecked())
+                    conditionText = condition.getSelectedItem().toString();
+                else
+                    conditionText = "Unknown";
+
+
                 String descriptionText = description.getText().toString();
                 String editionText = edition.getText().toString();
 

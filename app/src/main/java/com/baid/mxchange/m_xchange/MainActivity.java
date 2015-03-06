@@ -31,8 +31,9 @@ import com.parse.SaveCallback;
 public class MainActivity extends Activity {
 
     public static Boolean buy;
-    public static Boolean book;
+
     public static String course;
+    public static ParseObject courseObject;
     public static ParseObject sportsGame;
     public static ParseObject reviewCourse;
 
@@ -56,9 +57,9 @@ public class MainActivity extends Activity {
         Parse.initialize(this, "7ybxS3opTh2dYIeo0DLDguiqpvmtlanXoSCZzIdw", "xgenFXtatwsewpQ4YQiPXxC8V3qjPb9JbrFPls9n");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        //for now we will load fragment 1, but I would like some sort of dashboard here later
 
-        ProfileFragment newFragment = new ProfileFragment();
+
+        DashboardFragment newFragment = new DashboardFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         transaction.replace(R.id.frame, newFragment);
@@ -93,6 +94,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onSearchComplete() {
+
 
                 //launches results fragment
                 ResultsFragment resultsFragment = new ResultsFragment();
@@ -226,21 +228,18 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.logout) {
-
-            //logout facebook user
-           if(ParseFacebookUtils.getSession() != null && ParseFacebookUtils.getSession().isOpened())
-                ParseFacebookUtils.getSession().closeAndClearTokenInformation();
-
-            //logout parse user
-            ParseUser.logOut();
-
-            Intent intent = new Intent(MainActivity.this, Login.class);
-            startActivity(intent);
-            return true;
-        }
 
         //return user to dashboard
+        if (id == R.id.dashboard){
+
+            DashboardFragment resultsFragment = new DashboardFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, resultsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        }
+        //show user profile
         else if (id == R.id.profile) {
 
             ProfileFragment resultsFragment = new ProfileFragment();

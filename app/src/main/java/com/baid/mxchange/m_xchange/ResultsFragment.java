@@ -65,14 +65,8 @@ public class ResultsFragment extends Fragment implements AdapterView.OnItemClick
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
 
-        if(MainActivity.book){
+        retrieveTextbook(dialog, position);
 
-            retrieveTextbook(dialog, position);
-        }
-        else{
-
-            retrieveTicket(dialog, position);
-        }
 
 
     }
@@ -121,41 +115,5 @@ public class ResultsFragment extends Fragment implements AdapterView.OnItemClick
 
     }
 
-    private void retrieveTicket(ContactDialog dialog, int position){
 
-
-        ParseObject ticket = MainActivity.ticketResults.getSearchResults().get(position);
-        ParseUser user = ticket.getParseUser("user");
-
-        double price = ticket.getDouble("price");
-        int row = ticket.getInt("row");
-        int section = ticket.getInt("section");
-        boolean showNumber = ticket.getBoolean("showPhoneNumber");
-
-        String name = null;
-        Number number = 0;
-        String email = null;
-
-
-        try {
-
-            if(user != null) {
-
-                user.fetchIfNeeded();
-                name = user.getString("firstName") + " " + user.getString("lastName");
-                number = user.getNumber("phone");
-                email = user.getEmail();
-                Log.d("Baid", "User number is " + number);
-            }
-
-        }catch (Exception e){
-
-            Log.d("Baid", "Error: " + e.getMessage());
-        }
-
-        Log.d("Baid", "String number is " + number.toString());
-        dialog.setData(price, row, section, showNumber, name, number.doubleValue(), email);
-
-
-    }
 }

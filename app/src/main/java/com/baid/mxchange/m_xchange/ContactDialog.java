@@ -154,19 +154,6 @@ public class ContactDialog extends Dialog implements View.OnClickListener {
             seller.setText("Buyer: ");
         }
 
-        //don't need to do anything
-        if(MainActivity.book){
-
-
-        }
-        else{
-
-            title.setText("Game: ");
-            version.setText("Row: ");
-            course.setText("Section: ");
-            condition.setText("");
-            description.setText("");
-        }
     }
 
     @Override

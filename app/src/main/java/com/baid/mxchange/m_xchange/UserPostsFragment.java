@@ -57,10 +57,8 @@ public class UserPostsFragment extends Fragment implements AdapterView.OnItemCli
     private void searchMyPosts(){
 
         ParseQuery<ParseObject> query;
-        if(MainActivity.book)
-            query = new ParseQuery("Textbook");
-        else
-            query = new ParseQuery("Ticket");
+        query = new ParseQuery("Textbook");
+
 
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -90,38 +88,16 @@ public class UserPostsFragment extends Fragment implements AdapterView.OnItemCli
                 for(int i = 0; i < parseObjects.size(); i ++){
 
                     ParseObject post = parseObjects.get(i);
-                    if(MainActivity.book){
 
-                        String title = post.getString("title");
-                        boolean selling = post.getBoolean("selling");
-                        if(selling)
-                            title += " (Selling)";
-                        else
-                            title += " (Buying)";
-                        postLabels.add(title);
-                    }
-                    else{
+                    String title = post.getString("title");
+                    boolean selling = post.getBoolean("selling");
+                    if(selling)
+                        title += " (Selling)";
+                    else
+                        title += " (Buying)";
+                    postLabels.add(title);
 
-                        ParseObject game = post.getParseObject("game");
 
-                        try {
-
-                            if(game != null){
-
-                                game.fetchIfNeeded();
-                                String name = game.getString("opponent");
-                                boolean selling = post.getBoolean("selling");
-                                if(selling)
-                                    name += " (Selling)";
-                                else
-                                    name += " (Buying)";
-                                postLabels.add(name);
-                            }
-                        }catch (Exception e2){
-
-                            Log.d("Baid", e2.getMessage());
-                        }
-                    }
 
                 }
 

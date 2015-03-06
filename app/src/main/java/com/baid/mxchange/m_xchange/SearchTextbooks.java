@@ -131,6 +131,7 @@ public class SearchTextbooks {
 
         ParseObject textbook = new ParseObject("Textbook");
         textbook.put("class", MainActivity.course);
+        textbook.put("course", MainActivity.courseObject);
         textbook.put("condition", condition);
         textbook.put("description", desc);
         textbook.put("edition", edition);

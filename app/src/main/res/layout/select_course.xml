@@ -48,7 +48,7 @@
         android:layout_marginTop="25dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="Create a post"
         android:background="#00274c"
         android:textColor="@android:color/white"
         android:id="@+id/next"

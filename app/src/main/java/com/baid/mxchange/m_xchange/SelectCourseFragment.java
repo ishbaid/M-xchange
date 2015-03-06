@@ -207,7 +207,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
-        Log.d("Baid", "Items selected");
+        //college selected
         if(adapterView.getId() == school.getId()){
 
             Log.d("Baid", "College selected");
@@ -220,6 +220,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
             }
 
         }
+        //department selected
         else if(adapterView.getId() == department.getId()){
 
             Log.d("Baid", "Department selected");
@@ -230,6 +231,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
             }
         }
+        //class selected
         else if(adapterView.getId() == course.getId()){
 
 
@@ -238,6 +240,8 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
                 String cc = (String) course.getSelectedItem();
                 MainActivity.course = cc;
+                MainActivity.courseObject = allCourse.get(position);
+
 
             }
             else if(course.getAdapter().getCount() == 0){

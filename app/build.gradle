@@ -25,6 +25,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:20.0.0'
     compile files('libs/Parse-1.5.1.jar')
     compile project(':facebook')
+    compile 'de.hdodenhof:circleimageview:1.2.2'
 }
 
 dependencies {
