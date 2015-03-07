@@ -306,31 +306,6 @@ public class ReviewViewerFragment extends Fragment implements AdapterView.OnItem
                     text = (TextView) v0.findViewById(R.id.review_text);
 
                     score = (RatingBar) v0.findViewById(R.id.rating);
-                    left = (Button) v0.findViewById(R.id.left_button);
-                    right = (Button) v0.findViewById(R.id.right_button);
-
-                    left.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-
-                           int pos = pagerAdapter.getItemPosition(getCurrentPage());
-
-                           if(pos > 0)
-                            pager.setCurrentItem(pos - 1);
-                       }
-                   });
-
-                   right.setOnClickListener(new View.OnClickListener(){
-
-                       @Override
-                       public void onClick(View v) {
-                           int pos = pagerAdapter.getItemPosition(getCurrentPage());
-
-                           if(pos < pagerAdapter.getCount() - 1);
-                               pager.setCurrentItem(pos + 1);
-
-                       }
-                   });
 
                     ParseUser user = review.getParseUser("user");
                     ParseObject courseObject = review.getParseObject("course");

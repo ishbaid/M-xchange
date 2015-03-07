@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#244361">
+    android:background="#244361"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,7 +19,7 @@
             android:textColor="@android:color/white"
             />
 
-        </LinearLayout>
+    </LinearLayout>
 
 
 
@@ -26,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:text="Rating: "
+        android:text="Average Rating: "
         android:textSize="18dp"/>
 
     <RatingBar
@@ -36,41 +37,19 @@
         android:id="@+id/rating" />
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="Professor: "
-            android:textSize="18dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="DeOrio"
-            android:textSize="18dp"
-            android:id="@+id/professor" />
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:text="Workload: "
+            android:text="Course Workload: "
             android:textSize="18dp"/>
 
         <TextView
@@ -82,22 +61,32 @@
             android:id="@+id/workload" />
 
 
-        </LinearLayout>
+    </LinearLayout>
 
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/white">
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/review_text"
-            android:text="Review goes here"/>
+            android:textColor="@android:color/white"
+            android:text="Number of ratings: "
+            android:textSize="18dp"/>
 
-        </ScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="INSANE!!: "
+            android:textSize="18dp"
+            android:id="@+id/num_ratings" />
+
+
+    </LinearLayout>
+
 
 
 

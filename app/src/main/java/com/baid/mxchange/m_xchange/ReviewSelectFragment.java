@@ -1,7 +1,6 @@
 package com.baid.mxchange.m_xchange;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -38,6 +37,9 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
     private ViewPager pager = null;
     private MainPagerAdapter pagerAdapter = null;
     final static int QUERY_LIMIT = 5;
+    int numRatings = 0;
+    float averageRating = 0;
+    double averageWorkload = 0;
 
     //top halfs
     Spinner school, department, course;
@@ -95,11 +97,13 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
                     return;
                 }
 
-                ReadReviewFragment resultsFragment = new ReadReviewFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame, resultsFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                //remove all current reviews
+                while(pagerAdapter.getCount() != 0) {
+                    pagerAdapter.removeView(pager, 0);
+                    pagerAdapter.notifyDataSetChanged();
+
+                }
+                findReviews();
             }
         });
 
@@ -278,6 +282,47 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
 
     }
 
+    //find reviews for selected class
+    private void findReviews(){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Review");
+        query.whereEqualTo("course", MainActivity.reviewCourse);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+
+                if(e != null){
+
+                    Log.d(TAG, e.getMessage());
+                    return;
+                }
+
+                addReviewCards(parseObjects);
+                LayoutInflater ifl = getActivity().getLayoutInflater();
+                LinearLayout view = (LinearLayout) ifl.inflate(R.layout.course_overview, null);
+
+                TextView name, workload, numberOfRatings;
+                RatingBar rating;
+
+                name = (TextView) view.findViewById(R.id.review_title);
+                workload = (TextView) view.findViewById(R.id.workload);
+                numberOfRatings = (TextView) view.findViewById(R.id.num_ratings);
+
+                rating = (RatingBar) view.findViewById(R.id.rating);
+
+                name.setText(MainActivity.reviewCourse.getString("subject") + MainActivity.reviewCourse.getString("catalogNumber"));
+                rating.setRating(averageRating);
+                workload.setText(averageWorkload + "");
+                numberOfRatings.setText(numRatings + "");
+
+                pagerAdapter.addView(view, 0);
+                pagerAdapter.notifyDataSetChanged();
+                pager.setCurrentItem(0);
+            }
+        });
+    }
+
+    //finds recent reviews
     private void loadReviews(){
 
 
@@ -292,87 +337,83 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
                     return;
                 }
 
-                for(int i = 0; i < parseObjects.size(); i ++) {
-
-                    LayoutInflater ifl = getActivity().getLayoutInflater();
-                    LinearLayout v0 = (LinearLayout) ifl.inflate(R.layout.review_layout, null);
-
-                    ParseObject review = parseObjects.get(i);
-
-                    TextView course, professor, workload, text;
-                    RatingBar score;
-                    Button left, right;
-
-                    course = (TextView) v0.findViewById(R.id.review_title);
-                    professor = (TextView) v0.findViewById(R.id.professor);
-                    workload = (TextView) v0.findViewById(R.id.workload);
-                    text = (TextView) v0.findViewById(R.id.review_text);
-
-                    score = (RatingBar) v0.findViewById(R.id.rating);
-                    left = (Button) v0.findViewById(R.id.left_button);
-                    right = (Button) v0.findViewById(R.id.right_button);
-
-                    left.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            int pos = pagerAdapter.getItemPosition(getCurrentPage());
-
-                            if(pos > 0)
-                                pager.setCurrentItem(pos - 1);
-                        }
-                    });
-
-                    right.setOnClickListener(new View.OnClickListener(){
-
-                        @Override
-                        public void onClick(View v) {
-                            int pos = pagerAdapter.getItemPosition(getCurrentPage());
-
-                            if(pos < pagerAdapter.getCount() - 1);
-                            pager.setCurrentItem(pos + 1);
-
-                        }
-                    });
-
-                    ParseUser user = review.getParseUser("user");
-                    ParseObject courseObject = review.getParseObject("course");
-
-                    //if user's information is needed, we will fetch is at that time
-                    try {
-
-                        if (user != null)
-                            user.fetchIfNeeded();
-                        if (courseObject != null)
-                            courseObject.fetchIfNeeded();
-
-                    } catch (ParseException e2) {
-
-                        Log.d("Baid", e2.getMessage());
-
-                    }
-
-                    // String name = user.getString("firstName") + " " + user
-                    String className = courseObject.getString("subject") + courseObject.getString("catalogNumber");
-                    String reviewText = review.getString("text");
-                    String prof = review.getString("professor");
-                    Number rating = review.getNumber("rating");
-
-                    course.setText(className);
-                    text.setText(reviewText);
-                    professor.setText(prof);
-                    workload.setText("EASY BREEZE!");
-                    score.setRating(rating.floatValue());
-                    score.setIsIndicator(true);
-
-                    addView(v0);
-                    //pagerAdapter.notifyDataSetChanged();
+                addReviewCards(parseObjects);
 
 
-                }
 
             }
         });
+
+    }
+
+    private void addReviewCards(List<ParseObject> parseObjects){
+
+        float total = 0;
+        int workTotal = 0;
+        for(int i = 0; i < parseObjects.size(); i ++) {
+
+            LayoutInflater ifl = getActivity().getLayoutInflater();
+            LinearLayout v0 = (LinearLayout) ifl.inflate(R.layout.review_layout, null);
+
+            ParseObject review = parseObjects.get(i);
+
+            TextView course, professor, workload, text;
+            RatingBar score;
+            Button left, right;
+
+            course = (TextView) v0.findViewById(R.id.review_title);
+            professor = (TextView) v0.findViewById(R.id.professor);
+            workload = (TextView) v0.findViewById(R.id.workload);
+            text = (TextView) v0.findViewById(R.id.review_text);
+
+            score = (RatingBar) v0.findViewById(R.id.rating);
+
+
+            ParseUser user = review.getParseUser("user");
+            ParseObject courseObject = review.getParseObject("course");
+
+            //if user's information is needed, we will fetch is at that time
+            try {
+
+                if (user != null)
+                    user.fetchIfNeeded();
+                if (courseObject != null)
+                    courseObject.fetchIfNeeded();
+
+            } catch (ParseException e2) {
+
+                Log.d("Baid", e2.getMessage());
+
+            }
+
+            // String name = user.getString("firstName") + " " + user
+            String className = courseObject.getString("subject") + courseObject.getString("catalogNumber");
+            String reviewText = review.getString("text");
+            String prof = review.getString("professor");
+            Number rating = review.getNumber("rating");
+            Number workRating = review.getNumber("workload");
+
+            if(rating != null)
+                total += rating.floatValue();
+            if(workRating != null)
+                workTotal += workRating.intValue();
+
+            course.setText(className);
+            text.setText(reviewText);
+            professor.setText(prof);
+            workload.setText("EASY BREEZE!");
+            score.setRating(rating.floatValue());
+            score.setIsIndicator(true);
+
+            addView(v0);
+            //pagerAdapter.notifyDataSetChanged();
+
+
+        }
+
+        numRatings = parseObjects.size();
+        averageRating = total / numRatings;
+        averageWorkload = (double) workTotal / numRatings;
 
     }
 

@@ -29,7 +29,7 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
 
     Spinner school, department, course;
     List<ParseObject> allSchools, allDepartments, allCourse;
-    Button next, browse;
+    Button next, writeReview, browse;
 
     final static String TAG = "SelectCourseFragment";
     @Nullable
@@ -78,6 +78,24 @@ public class SelectCourseFragment extends Fragment implements AdapterView.OnItem
                     MainActivity.searchResults = new SearchTextbooks(MainActivity.searchInterface);
 
                 }
+            }
+        });
+
+        writeReview = (Button) rootView.findViewById(R.id.write_review);
+        writeReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MainActivity.reviewCourse = MainActivity.courseObject;
+                if(MainActivity.reviewCourse == null)
+                    return;
+
+                WriteReviewFragment resultsFragment = new WriteReviewFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame, resultsFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
             }
         });
 

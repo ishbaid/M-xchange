@@ -45,21 +45,33 @@
         android:layout_gravity="center_horizontal"/>
 
     <Button
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Create a post"
-        android:background="#00274c"
+        android:text="Write a Review"
+        android:background="@drawable/round_button"
         android:textColor="@android:color/white"
-        android:id="@+id/next"
+        android:id="@+id/write_review"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_marginTop="5dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="@string/browse_label"
-        android:background="#00274c"
+        android:text="Post a book"
+        android:background="@drawable/round_button"
+        android:textColor="@android:color/white"
+        android:id="@+id/next"
+        android:layout_gravity="center_horizontal" />
+
+
+
+    <Button
+        android:layout_marginTop="5dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Browse books"
+        android:background="@drawable/round_button"
         android:textColor="@android:color/white"
         android:id="@+id/browse_button"
         android:layout_gravity="center_horizontal" />
