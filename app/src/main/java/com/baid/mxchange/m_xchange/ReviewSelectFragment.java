@@ -1,6 +1,7 @@
 package com.baid.mxchange.m_xchange;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -298,6 +299,8 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
                 }
 
                 addReviewCards(parseObjects);
+
+                //course overview card
                 LayoutInflater ifl = getActivity().getLayoutInflater();
                 LinearLayout view = (LinearLayout) ifl.inflate(R.layout.course_overview, null);
 
@@ -312,7 +315,29 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
 
                 name.setText(MainActivity.reviewCourse.getString("subject") + MainActivity.reviewCourse.getString("catalogNumber"));
                 rating.setRating(averageRating);
-                workload.setText(averageWorkload + "");
+
+                //set workload text
+                String workText = "Unknown";
+                if(averageWorkload < .5) {
+                    workText = "Easy Breezy";
+                    workload.setTextColor(Color.GREEN);
+                }
+                else if (averageWorkload < 1.5) {
+                    workText = "Moderate";
+                    workload.setTextColor(Color.YELLOW);
+                }
+                else if (averageWorkload < 2.5) {
+                    workText = "Heavy";
+                    workload.setTextColor(Color.MAGENTA);
+                }
+                else if (averageWorkload <= 3) {
+                    workText = "INSANE!";
+                    workload.setTextColor(Color.RED);
+                }
+
+
+
+                workload.setText(workText);
                 numberOfRatings.setText(numRatings + "");
 
                 pagerAdapter.addView(view, 0);
@@ -401,7 +426,32 @@ public class ReviewSelectFragment extends Fragment implements AdapterView.OnItem
             course.setText(className);
             text.setText(reviewText);
             professor.setText(prof);
-            workload.setText("EASY BREEZE!");
+
+            String workText = "Unknown";
+            if(workRating != null) {
+                //set workload
+                switch (workRating.intValue()) {
+
+                    case 0:
+                        workText = "Easy Breezy!";
+                        workload.setTextColor(Color.GREEN);
+                        break;
+                    case 1:
+                        workText = "Moderate";
+                        workload.setTextColor(Color.YELLOW);
+                        break;
+                    case 2:
+                        workText = "Heavy";
+                        workload.setTextColor(Color.MAGENTA);
+                        break;
+                    case 3:
+                        workText = "INSANE!";
+                        workload.setTextColor(Color.RED);
+                        break;
+                }
+            }
+
+            workload.setText(workText);
             score.setRating(rating.floatValue());
             score.setIsIndicator(true);
 

@@ -49,7 +49,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_launcher, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         results = (ListView) rootView.findViewById(R.id.results_listview);
         results.setOnItemClickListener(this);

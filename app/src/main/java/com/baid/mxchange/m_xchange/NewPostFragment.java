@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 
 /**
@@ -28,6 +29,8 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
     EditText title, price, edition, description;
     Spinner condition;
     Button submit;
+
+    TextView descLabel, conditonLabel;
 
     double priceVal = -1;
     String nameVal = null;
@@ -48,6 +51,10 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
 
         //by default user is trying to sell a textbook
         MainActivity.buy = false;
+
+
+        descLabel = (TextView) rootView.findViewById(R.id.desc_label);
+        conditonLabel = (TextView) rootView.findViewById(R.id.condition_label);
 
         postType = (Switch) rootView.findViewById(R.id.post_type_switch);
         postType.setOnCheckedChangeListener(this);
@@ -169,6 +176,8 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
                 MainActivity.buy = false;
                 condition.setVisibility(View.VISIBLE);
                 description.setVisibility(View.VISIBLE);
+                conditonLabel.setVisibility(View.VISIBLE);
+                descLabel.setVisibility(View.VISIBLE);
 
             }
             //switched to buy
@@ -177,7 +186,8 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
                 MainActivity.buy = true;
                 condition.setVisibility(View.INVISIBLE);
                 description.setVisibility(View.INVISIBLE);
-
+                conditonLabel.setVisibility(View.INVISIBLE);
+                descLabel.setVisibility(View.INVISIBLE);
             }
         }
 

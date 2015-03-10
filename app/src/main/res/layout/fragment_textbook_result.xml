@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.baid.mxchange.m_xchange.TextbookResultFragment"
+    android:orientation="vertical"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+
+        android:background="#34495E">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Class Name"
+            android:textSize="36dp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            />
+        </LinearLayout>
+
+
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="288dp"
+        android:layout_weight="1"
+        >
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

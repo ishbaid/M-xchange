@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -31,9 +33,11 @@ public class WriteReviewFragment extends Fragment implements View.OnClickListene
 
     TextView courseName;
     RatingBar courseRating;
-    EditText courseReview;
+    EditText courseReview, profName;
+    Spinner workloadSpinner;
     Switch anon;
     Button submit;
+
 
 
     public WriteReviewFragment() {
@@ -49,11 +53,18 @@ public class WriteReviewFragment extends Fragment implements View.OnClickListene
 
         courseName = (TextView) rootView.findViewById(R.id.review_write_title);
         courseRating = (RatingBar) rootView.findViewById(R.id.write_rating);
+        workloadSpinner = (Spinner) rootView.findViewById(R.id.workload_spinner);
+        profName = (EditText) rootView.findViewById(R.id.professor_edit);
         courseReview = (EditText) rootView.findViewById(R.id.write_review);
         anon = (Switch) rootView.findViewById(R.id.anon);
         submit = (Button) rootView.findViewById(R.id.write_submit);
 
         submit.setOnClickListener(this);
+
+        String[] values = {"Easy Breezy", "Moderate", "Heavy", "Insane"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, values);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        workloadSpinner.setAdapter(adapter);
 
         String title = MainActivity.reviewCourse.getString("subject") + MainActivity.reviewCourse.getString("catalogNumber");
         courseName.setText(title);
@@ -68,9 +79,13 @@ public class WriteReviewFragment extends Fragment implements View.OnClickListene
         if(id == submit.getId()){
 
             double rating = courseRating.getRating();
+            String professor = profName.getText().toString();
+            int workloadValue = workloadSpinner.getSelectedItemPosition();
             ParseObject review = new ParseObject("Review");
             review.put("user", ParseUser.getCurrentUser());
             review.put("course", MainActivity.reviewCourse);
+
+
             review.put("anonymous", anon.isChecked());
 
             //submit non empty review
@@ -80,6 +95,8 @@ public class WriteReviewFragment extends Fragment implements View.OnClickListene
                 review.put("text", text);
             }
             review.put("rating", rating);
+            review.put("professor", professor);
+            review.put("workload", workloadValue);
 
             review.saveInBackground(new SaveCallback() {
                 @Override

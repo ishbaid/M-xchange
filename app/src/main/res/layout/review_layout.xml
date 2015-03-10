@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#244361">
+    android:background="@drawable/border"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,34 +30,37 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:text="Rating: "
-        android:textSize="18dp"/>
+        android:textSize="14dp"
+        android:layout_marginLeft="20dp"/>
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
-        android:id="@+id/rating" />
+        android:id="@+id/rating"
+        android:layout_marginLeft="20dp"/>
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:text="Professor: "
-            android:textSize="18dp"/>
+            android:textSize="14dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:text="DeOrio"
-            android:textSize="18dp"
+            android:textSize="14dp"
             android:id="@+id/professor" />
 
 
@@ -64,6 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp">
 
         <TextView
@@ -71,14 +78,14 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:text="Workload: "
-            android:textSize="18dp"/>
+            android:textSize="14dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:text="INSANE!!: "
-            android:textSize="18dp"
+            android:textSize="14dp"
             android:id="@+id/workload" />
 
 
@@ -87,15 +94,20 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/white">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/review_text"
+                android:text="Review goes here"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/review_text"
-            android:text="Review goes here"/>
 
         </ScrollView>
 
