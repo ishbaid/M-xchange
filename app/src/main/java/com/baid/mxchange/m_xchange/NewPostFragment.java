@@ -30,7 +30,7 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
     Spinner condition;
     Button submit;
 
-    TextView descLabel, conditonLabel;
+    TextView courseTitle, descLabel, conditonLabel;
 
     double priceVal = -1;
     String nameVal = null;
@@ -52,7 +52,7 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
         //by default user is trying to sell a textbook
         MainActivity.buy = false;
 
-
+        courseTitle = (TextView) rootView.findViewById(R.id.course_name);
         descLabel = (TextView) rootView.findViewById(R.id.desc_label);
         conditonLabel = (TextView) rootView.findViewById(R.id.condition_label);
 
@@ -66,6 +66,8 @@ public class NewPostFragment extends Fragment implements AdapterView.OnItemSelec
 
         submit = (Button) rootView.findViewById(R.id.submit_button);
         submit.setOnClickListener(this);
+
+        courseTitle.setText(MainActivity.course);
 
         String[]values = {"New", "Fair", "Used"};
 
